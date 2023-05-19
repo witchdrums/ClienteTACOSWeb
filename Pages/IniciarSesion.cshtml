@@ -1,0 +1,122 @@
+@page
+@using ClienteTACOSWeb.Modelos
+
+@model IniciarSesionModel
+@{
+    ViewData["Title"] = "Iniciar sesión";    
+}
+
+<nav>
+  <div class="nav nav-tabs d-flex justify-content-center d-flex align-items-center" id="nav-tab" role="tablist">
+    <a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Entrar</a>
+    <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Unirse</a>
+  </div> 
+</nav>
+
+<div class="tab-content d-flex justify-content-center" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+    <form method="post" asp-page-handler="entrar">
+      <!-- Email input -->
+      <div class="form-outline mb-4">
+        <input type="email" id="loginName" class="form-control" asp-for="Email"/>
+        <label class="form-label" for="loginName">Email</label>
+      </div>
+
+      <!-- Password input -->
+      <div class="form-outline mb-4">
+        <input type="password" id="loginPassword" class="form-control" asp-for="Contrasena"/>
+        <label class="form-label" for="loginPassword">Contraseña</label>
+      </div>
+
+      <!-- Submit button -->
+      <button type="submit" class="btn btn-primary btn-block mb-4">Entrar</button>
+
+      <!-- Register buttons -->
+      <div class="text-center">
+        <p>¿Aún no eres miembro? <a href="#!">¡Únete!</a></p>
+      </div>
+    </form>
+  </div>
+  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+    <form>
+      <!-- Name input -->
+      <div class="form-outline mb-1">
+        <input type="text" id="registerName" class="form-control" />
+        <label class="form-label" for="registerName">Name</label>
+      </div>
+
+      <div class="form-outline mb-1">
+        <input type="text" id="apellidoPaterno" class="form-control" />
+        <label class="form-label" for="apellidoPaterno">Apellido Paterno</label>
+      </div>
+
+      <div class="form-outline mb-1">
+        <input type="text" id="apellidoMaterno" class="form-control" />
+        <label class="form-label" for="apellidoMaterno">Apellido Materno</label>
+      </div>
+      <!-- Username input -->
+      <div class="form-outline mb-1">
+        <input type="text" id="direccion" class="form-control" />
+        <label class="form-label" for="direccion">Dirección</label>
+      </div>
+      <div class="form-outline mb-6">
+        <input type="text" id="telefono" class="form-control" />
+        <label class="form-label" for="telefono">Teléfono</label>
+      </div>
+      <!-- Email input -->
+      <div class="form-outline mb-1">
+        <input type="email" id="registerEmail" class="form-control" />
+        <label class="form-label" for="registerEmail">Email</label>
+      </div>
+
+
+      <!-- Password input -->
+      <div class="form-outline mb-1">
+        <input type="password" id="registerPassword" class="form-control" />
+        <label class="form-label" for="registerPassword">Contraseña</label>
+      </div>
+
+      <!-- Repeat Password input -->
+      <div class="form-outline mb-1">
+        <input type="password" id="registerRepeatPassword" class="form-control" />
+        <label class="form-label" for="registerRepeatPassword">Confirma tu contraseña</label>
+      </div>
+
+      <!-- Checkbox -->
+      <div class="form-check d-flex justify-content-center mb-4">
+        <input class="form-check-input me-2" type="checkbox" value="" id="registerCheck" checked
+          aria-describedby="registerCheckHelpText" />
+        <label class="form-check-label" for="registerCheck">
+          I have read and agree to the terms
+        </label>
+      </div>
+
+      <!-- Submit button -->
+      <button  class="btn btn-primary">Unirse</button>
+    </form>
+  </div>
+  </div>
+</div>
+
+<script>
+  function cambiar(){
+    $("#dialogoEliminar").modal("show");
+  }
+</script>
+
+<div class="modal fade" id="dialogoEliminar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">                
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+        <form>
+          <!-- Email input -->
+          <div class="form-outline mb-4">
+            <input type="email" id="loginName" class="form-control" />
+            <label class="form-label" for="loginName">Email</label>
+          </div>
+          <!-- Submit button -->
+          <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+        </form>
+      </div>
+  </div>
+</div>    

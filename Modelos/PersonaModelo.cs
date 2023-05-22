@@ -20,6 +20,10 @@ namespace ClienteTACOSWeb.Modelos
         {
             this.Miembros = new List<MiembroModelo>();
         } 
+
+        public string NombreCompleto => $"{this.Nombre} "        
+                                        + $"{this.ApellidoPaterno} " 
+                                        + $"{this.ApellidoMaterno}";
         public void LlenarPropiedades() 
         {
             Nombre = "Nombre";

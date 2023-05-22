@@ -21,7 +21,12 @@ public partial class PedidoModelo
     public Dictionary<int, AlimentoModelo> Alimentos { get; set; } = 
         new Dictionary<int,AlimentoModelo>();
 
+    public virtual MiembroModelo? Miembro { get; set; } = null!;
 
+    public string NombreMiembro => $"{this.Miembro.Persona.Nombre} "        
+                                    + $"{this.Miembro.Persona.ApellidoPaterno} " 
+                                    + $"{this.Miembro.Persona.ApellidoMaterno}";
+    public string EstadoStr => ((Estados)Estado).ToString();
     //public virtual ICollection<Alimentospedido> Alimentospedidos { get; set; } = new List<Alimentospedido>();
 
     //[JsonIgnore]

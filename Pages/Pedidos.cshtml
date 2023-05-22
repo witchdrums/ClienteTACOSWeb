@@ -1,0 +1,97 @@
+@page
+@using ClienteTACOSWeb.Modelos
+
+@model PedidosModel 
+@{
+    ViewData["Title"] = "Pedidos";    
+}
+
+<h1>Pedidos</h1>
+
+<table class="table table-bordered  table-hover">
+    <thead>
+        <tr>
+            <th>Miembro</th>
+            <th>Fecha</th>
+            <th>Total</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pedido in Model._consultante.ObtenerPedidos()){
+            int estadoActual = (int)pedido.Estado;
+            <tr>
+                <td>
+                    @pedido.Miembro.Persona.NombreCompleto
+                </td>
+                <td>
+                    @pedido.Fecha
+                </td>
+                <td>
+                    @pedido.TotalStr
+                </td>
+                <td>
+                    <div class="col-sm-6">
+                        <a href="ActualizarPedido?IDPedido=@pedido.Id">
+                            <i class="col-sm-6 text-danger fa-solid fa-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    function actualizarPedidos(idPedido, fecha, total){
+        $("#IdPedido").val(idPedido);
+        $("#fechaPedido").html(fecha);
+        $("#totalPedido").html(total);
+        $("#dialogoActualizarPedido").modal("show");
+        //$("#actualizarPedidosForm").submit();
+    }
+
+</script>
+
+<div class="modal fade" id="dialogoActualizarPedido" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">                
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="ActualizarPedido">
+                <input type="hidden" asp-for="IdPedido">
+                <div class="modal-header">
+                    <h5 class="modal-title">Actualizar pedido</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">                                
+                    </button>
+                </div>
+                <div class="modal-body d-flex flex-column">
+                    <div class="d-flex justify-content-between">
+                        <h3>Pedido</h3>
+                        <div class="justify-content-end">
+                            <label for="estados">Estado: </label>
+                            <select id="estados">
+                                @foreach (var estado in Model.Estados){
+                                    
+                                    <option>
+                                        @estado
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <p>Realizado: <span id="fechaPedido"></span></p>
+                    <p>Total: <span id="totalPedido"></span></p>
+                </div>
+                <div class="modal-footer">                            
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#dialogoActualizarPedido').modal('hide');">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>     
+
+<form id="actualizarPedidosForm" method="post" asp-page-handler="ActualizarPedido">
+</form>
+
+

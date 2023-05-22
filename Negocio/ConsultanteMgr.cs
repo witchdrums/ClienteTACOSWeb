@@ -1,12 +1,16 @@
 namespace ClienteTACOSWeb.Negocio;
 using ClienteTACOSWeb.Modelos;
+using System.Collections.Generic;
 using System.Net.Http;
+using Newtonsoft.Json;
+using System.Net.Http.Json;
 
 
 public class ConsultanteMgr : IConsultanteMgt
 {
     private PersonaModelo miembroEnSesion = new PersonaModelo();
     PedidoModelo pedido = new PedidoModelo();
+    List<PedidoModelo> pedidos = new List<PedidoModelo>();
     double total = 0;
     HttpClient _cliente;
     public ConsultanteMgr(IHttpClientFactory fcliente) 
@@ -14,6 +18,7 @@ public class ConsultanteMgr : IConsultanteMgt
         _cliente = fcliente.CreateClient("tacos");
         //CursosAPI _cursosAPI
     }
+
 
     public void AgregarAlimentoAPedido(AlimentoModelo alimento)
     {
@@ -28,7 +33,7 @@ public class ConsultanteMgr : IConsultanteMgt
         this.pedido.Total += alimento.Precio;
     }
 
-    public void IniciarSesion(PersonaModelo persona)
+    public RespuestaIniciarSesion IniciarSesion(PersonaModelo persona)
     {
         HttpResponseMessage respuesta = 
             this._cliente.PostAsJsonAsync(
@@ -36,9 +41,10 @@ public class ConsultanteMgr : IConsultanteMgt
                 persona
             ).Result;
         respuesta.EnsureSuccessStatusCode();
-        this.miembroEnSesion = respuesta.Content
-                                        .ReadAsAsync<PersonaModelo>()
-                                        .Result;
+        return respuesta.Content
+                        .ReadAsAsync<RespuestaIniciarSesion>()
+                        .Result;
+        
     }
 
     public PersonaModelo ObtenerMiembroEnSesion()
@@ -51,5 +57,30 @@ public class ConsultanteMgr : IConsultanteMgt
         return this.pedido;
     }
 
+    public List<PedidoModelo> ObtenerPedidos()
+    {
+        HttpResponseMessage respuesta = this._cliente.GetAsync("pedidos").Result;
+        respuesta.EnsureSuccessStatusCode();
+        this.pedidos = respuesta.Content
+                        .ReadAsAsync<List<PedidoModelo>>()
+                        .Result;
+        return pedidos;
+    }
+
+    public void ActualizarPedido(PedidoModelo pedido)
+    {
+
+        this._cliente.PatchAsJsonAsync(
+            "pedidos",
+            pedido
+        );
+
+        
+    }
+
+    public PedidoModelo ObtenerPedidoLocal(int IdPedido)
+    {
+        return this.pedidos.FirstOrDefault(p => p.Id == IdPedido) ?? new PedidoModelo();
+    }
 
 }

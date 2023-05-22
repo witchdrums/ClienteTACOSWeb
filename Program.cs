@@ -6,9 +6,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddSingleton<IMenuMgt, MenuMgr>();
 builder.Services.AddSingleton<IConsultanteMgt, ConsultanteMgr>();
-builder.Services.AddHttpClient("tacos", client => {
-    client.BaseAddress = new Uri("http://localhost:5174/");
+builder.Services.AddHttpClient("tacos", client => 
+{
+    client.BaseAddress = new Uri("http://localhost:5087/");
     client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
 });
 
 var app = builder.Build();
@@ -27,6 +37,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapRazorPages();
 

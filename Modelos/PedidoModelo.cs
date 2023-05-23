@@ -31,4 +31,14 @@ public partial class PedidoModelo
 
     //[JsonIgnore]
     //public virtual Miembro? Miembro { get; set; } = null!;
+
+    public PedidoModelo(){}
+    public PedidoModelo(PedidoSimple pedidoModelo)
+    {
+        this.Id = pedidoModelo.Id;
+        this.Total = pedidoModelo.Total;
+        this.IdMiembro = pedidoModelo.IdMiembro;
+        this.Estado = pedidoModelo.Estado;
+        this.Fecha = pedidoModelo.Fecha;
+    }
 }

@@ -67,20 +67,32 @@ public class ConsultanteMgr : IConsultanteMgt
         return pedidos;
     }
 
-    public void ActualizarPedido(PedidoModelo pedido)
+    public async void ActualizarPedido(PedidoSimple pedido)
     {
 
-        this._cliente.PatchAsJsonAsync(
+        HttpResponseMessage respuesta= await this._cliente.PatchAsJsonAsync(
             "pedidos",
             pedido
         );
-
+        respuesta.EnsureSuccessStatusCode();
         
     }
 
     public PedidoModelo ObtenerPedidoLocal(int IdPedido)
     {
-        return this.pedidos.FirstOrDefault(p => p.Id == IdPedido) ?? new PedidoModelo();
+        this.pedido = 
+            this.pedidos
+                .FirstOrDefault(p => p.Id == IdPedido) 
+                ?? new PedidoModelo();
+        return this.pedido;
     }
 
+    public async Task RegistrarMiembro(PersonaModelo persona)
+    {
+        ValidadorRespuestaHttp.Validar(await this._cliente.PostAsJsonAsync(
+            "persona",
+            persona
+        ));
+
+    }
 }

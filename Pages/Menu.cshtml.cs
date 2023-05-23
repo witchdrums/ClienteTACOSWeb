@@ -28,6 +28,11 @@ public class MenuModel : PageModel
         _env = env;
     }
 
+    public async void OnGet()
+    {
+        await this._menu.CargarMenu();
+    }
+
     //funciona con post
     public void OnPostAgregarAlimentoAPedido()
     {

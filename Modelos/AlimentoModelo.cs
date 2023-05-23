@@ -36,39 +36,15 @@ public class AlimentoModelo : INotifyPropertyChanged
         }
         get { return this.existencia; }
     }
-    public byte[]? Imagen { set; get; }
+
+    public int IdImagen { get; set; }
+    public Imagen Imagen { set; get; }
     public double Precio { set; get; }
     public int IdCategoria { get; set; }
 
     public List<object>? Alimentospedidos { get; set; } 
 
     public object? Categoria { get; set; }   
-
-    public string ImagenConvertida 
-    { 
-        get
-        {
-             return String.Format("data:image/png;base64,{0}", 
-                    Convert.ToBase64String(Imagen));
-        }
-    }
-
-    /*
-    //Otros
-    public BitmapSource ImagenConvertida => byteArrayToImage();
-    public BitmapSource byteArrayToImage()
-    {
-        Bitmap bitmap;
-        using (var stream = new MemoryStream(Imagen))
-        {
-            bitmap = new Bitmap(stream);
-        }
-        var puntero = bitmap.GetHbitmap();
-
-        return Imaging.CreateBitmapSourceFromHBitmap(puntero, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-        
-    }
-    */
 
     public bool Agotado => this.Existencia<1;
     public string PrecioStr =>

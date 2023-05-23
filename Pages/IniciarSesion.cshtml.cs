@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ClienteTACOSWeb.Modelos;
 using ClienteTACOSWeb.Negocio;
+using System.Net.Http;
 
 namespace ClienteTACOSWeb.Pages;
 
@@ -15,10 +16,15 @@ public class IniciarSesionModel : PageModel
     public string Email { get; set; }
 
     [BindProperty(SupportsGet =true)]
-    public string Contrasena { get; set; }
+    public string Contrasena { get; set; } 
+    [BindProperty(SupportsGet =true)]
+    public string ContrasenaConfirmacion { get; set; }
 
     [BindProperty(SupportsGet =true)]
     public bool esLogin { get; set; }
+
+    [BindProperty(SupportsGet = true)]
+    public PersonaModelo Persona { set; get; }
 
     public IniciarSesionModel(ILogger<IniciarSesionModel> logger, 
                             Microsoft.AspNetCore.Hosting.IWebHostEnvironment env,
@@ -29,6 +35,7 @@ public class IniciarSesionModel : PageModel
         _env = env;
         this.Email = "";
         this.Contrasena = "";
+        this.Persona = new PersonaModelo();
     }
 
     public void OnPostEntrar()
@@ -54,5 +61,21 @@ public class IniciarSesionModel : PageModel
 
         }
 
+    }
+
+    public async void OnPostUnirse()
+    {
+        try
+        {
+            if (ContrasenaConfirmacion.Equals(Contrasena))
+            {
+                this.Persona.Miembros.Add(new MiembroModelo { Contrasena = this.Contrasena, CodigoConfirmacion = 1234 });
+                await this._consultante.RegistrarMiembro(Persona);
+            }
+        }
+        catch (Exception a)
+        {
+            _logger.LogError("Unirse", a.Message);
+        }
     }
 }

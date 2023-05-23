@@ -19,7 +19,7 @@ public class ActualizarPedidoModel : PageModel
     public List<Estados> Estados {get; set; }
     
     [BindProperty(SupportsGet=true)]
-    public int IdEstado {get; set;}
+    public int? IdEstado {get; set;}
     public ActualizarPedidoModel(ILogger<MenuModel> logger, 
                                     Microsoft.AspNetCore.Hosting.IWebHostEnvironment env,
                                     IConsultanteMgt consultante)
@@ -38,6 +38,10 @@ public class ActualizarPedidoModel : PageModel
 
     public void OnPostActualizarPedido()
     {
-        Console.WriteLine(this.IdEstado);
+        PedidoSimple? pedido = new PedidoSimple(this._consultante.ObtenerPedido());
+        pedido.Estado = this.IdEstado;
+        this._consultante.ObtenerPedido().Estado = this.IdEstado;
+
+        this._consultante.ActualizarPedido(pedido);
     }
 }

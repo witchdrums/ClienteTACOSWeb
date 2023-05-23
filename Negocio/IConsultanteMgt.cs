@@ -13,5 +13,7 @@ public interface IConsultanteMgt{
 
     public PedidoModelo ObtenerPedidoLocal(int IdPedido);
     
-    public void ActualizarPedido(PedidoModelo pedido); 
+    public void ActualizarPedido(PedidoSimple pedido);
+
+    public Task RegistrarMiembro(PersonaModelo persona);
 }

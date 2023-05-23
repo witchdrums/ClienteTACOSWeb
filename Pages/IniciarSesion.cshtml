@@ -1,5 +1,6 @@
 @page
 @using ClienteTACOSWeb.Modelos
+@using Microsoft.AspNetCore.Http;
 
 @model IniciarSesionModel
 @{
@@ -38,25 +39,25 @@
     </form>
   </div>
   <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-    <form>
+    <form method="post" asp-page-handler="Unirse">
       <!-- Name input -->
       <div class="form-outline mb-1">
-        <input type="text" id="registerName" class="form-control" />
+        <input type="text" id="registerName" class="form-control" asp-for="@Model.Persona.Nombre"/>
         <label class="form-label" for="registerName">Name</label>
       </div>
 
       <div class="form-outline mb-1">
-        <input type="text" id="apellidoPaterno" class="form-control" />
+         <input type="text" id="apellidoPaterno" class="form-control" asp-for="@Model.Persona.ApellidoPaterno" />
         <label class="form-label" for="apellidoPaterno">Apellido Paterno</label>
       </div>
 
       <div class="form-outline mb-1">
-        <input type="text" id="apellidoMaterno" class="form-control" />
+        <input type="text" id="apellidoMaterno" class="form-control" asp-for="@Model.Persona.ApellidoMaterno"/>
         <label class="form-label" for="apellidoMaterno">Apellido Materno</label>
       </div>
       <!-- Username input -->
       <div class="form-outline mb-1">
-        <input type="text" id="direccion" class="form-control" />
+        <input type="text" id="direccion" class="form-control" asp-for="@Model.Persona.Direccion"/>
         <label class="form-label" for="direccion">Dirección</label>
       </div>
       <div class="form-outline mb-6">
@@ -65,20 +66,20 @@
       </div>
       <!-- Email input -->
       <div class="form-outline mb-1">
-        <input type="email" id="registerEmail" class="form-control" />
+        <input type="email" id="registerEmail" class="form-control" asp-for="@Model.Persona.Email"/>
         <label class="form-label" for="registerEmail">Email</label>
       </div>
 
 
       <!-- Password input -->
       <div class="form-outline mb-1">
-        <input type="password" id="registerPassword" class="form-control" />
+        <input type="password" id="registerPassword" class="form-control" asp-for="Contrasena" />
         <label class="form-label" for="registerPassword">Contraseña</label>
       </div>
 
       <!-- Repeat Password input -->
       <div class="form-outline mb-1">
-        <input type="password" id="registerRepeatPassword" class="form-control" />
+        <input type="password" id="registerRepeatPassword" class="form-control" asp-for="ContrasenaConfirmacion"/>
         <label class="form-label" for="registerRepeatPassword">Confirma tu contraseña</label>
       </div>
 
@@ -96,27 +97,29 @@
     </form>
   </div>
   </div>
+
 </div>
 
-<script>
-  function cambiar(){
-    $("#dialogoEliminar").modal("show");
-  }
-</script>
 
-<div class="modal fade" id="dialogoEliminar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">                
-  <div class="modal-dialog" role="document">
-      <div class="modal-content">
 
-        <form>
-          <!-- Email input -->
-          <div class="form-outline mb-4">
-            <input type="email" id="loginName" class="form-control" />
-            <label class="form-label" for="loginName">Email</label>
-          </div>
-          <!-- Submit button -->
-          <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
-        </form>
-      </div>
-  </div>
-</div>    
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

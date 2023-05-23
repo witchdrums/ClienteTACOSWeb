@@ -1,6 +1,13 @@
+using System.Text.Json.Serialization;
 using ClienteTACOSWeb.Negocio;
+using Grpc.Core;
+using IMG;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers()
+                .AddJsonOptions(x =>
+                     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve); 
+
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -11,6 +18,8 @@ builder.Services.AddHttpClient("tacos", client =>
     client.BaseAddress = new Uri("http://localhost:5087/");
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
+
+
 
 builder.Services.AddDistributedMemoryCache();
 
@@ -43,3 +52,20 @@ app.UseSession();
 app.MapRazorPages();
 
 app.Run();
+
+
+Channel channel =
+                new Channel("localhost", 7252,
+                            ChannelCredentials.Insecure);
+await channel.ConnectAsync().ContinueWith((task) =>
+{
+
+    if (task.Status == TaskStatus.RanToCompletion)
+
+        Console.WriteLine("Cliente conectado satisfactoriamente");
+
+});
+
+channel.ShutdownAsync().Wait();
+
+Console.ReadKey();

@@ -7,32 +7,36 @@
 }
 
 <title>Actualizar pedido</title>
-<h1>Actualizar pedido</h1>
-<h4>Miembro: <span>@Model.Pedido.Miembro.Persona.NombreCompleto</span></h4>
-<h4>Fecha: <span>@Model.Pedido.Fecha</span></h4>
-<h4>
-    <label for="estado">Estado:</label>
-    <select id="estado" asp-for="IdEstado">
-        
-        @foreach (var estado in Model.Estados){
-            if (estado != (Estados)Model.Pedido.Estado){
-                <option value= estado>
-                    @estado
-                </option>
-            }else{
-                <option selected value=@Model.Pedido.Estado>
-                    @((Estados)Model.Pedido.Estado)
-                </option>
-            }
-        }
-    </select>
-</h4>
+<h1>Actualizar pedido: <span>@Model._consultante.ObtenerPedido().Id</span></h1>
+<h4>Miembro: <span>@Model._consultante.ObtenerPedido().Miembro.Persona.NombreCompleto</span></h4>
+<h4>Fecha: <span>@Model._consultante.ObtenerPedido().Fecha</span></h4>
+<h4>Total: <span>@Model._consultante.ObtenerPedido().TotalStr</span></h4>
 <hr>
-<hr>
-
-<div class="d-flex  justify-content-end">
+<div class="form-group">
     <form method="post" asp-page-handler="ActualizarPedido">
+        <h4>
+            <label for="estado">Estado:</label>
+            <select class="form-control" id="estado" asp-for="IdEstado">
+                
+                @foreach (var estado in Model.Estados){
+                    if ((int)estado != Model._consultante.ObtenerPedido().Estado){
+                        <option value= "@((int)estado)">
+                            @(estado)
+                        </option>
+                    }else{
+                        <option selected value="@Model._consultante.ObtenerPedido().Estado">
+                            @((Estados)Model._consultante.ObtenerPedido().Estado)
+                        </option>
+                    }
+                }
+            </select>
+        </h4>
+        <hr>
+
+        <div class="d-flex  justify-content-end">
+    
         <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <button class="btn btn-secondary">Regresar</button>
     </form>
-    <button class="btn btn-secondary">Regresar</button>
+</div>
 </div>

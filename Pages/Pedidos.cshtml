@@ -12,9 +12,10 @@
     <thead>
         <tr>
             <th>Miembro</th>
-            <th>Fecha</th>
+            <th>Ordenado</th>
             <th>Total</th>
             <th>Estado</th>
+            <th>Opciones</th>
         </tr>
     </thead>
     <tbody>
@@ -31,9 +32,12 @@
                     @pedido.TotalStr
                 </td>
                 <td>
-                    <div class="col-sm-6">
-                        <a href="ActualizarPedido?IDPedido=@pedido.Id">
-                            <i class="col-sm-6 text-danger fa-solid fa-trash"></i>
+                    @((Estados)pedido.Estado)   
+                </td>
+                <td>
+                    <div class="d-flex justify-content-center">
+                        <a class="btn btn-primary" href="ActualizarPedido?IDPedido=@pedido.Id">
+                            <i class="fa-solid fa-pen-to-square"></i>
                         </a>
                     </div>
                 </td>

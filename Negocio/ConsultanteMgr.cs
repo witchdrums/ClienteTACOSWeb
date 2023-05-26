@@ -35,12 +35,13 @@ public class ConsultanteMgr : IConsultanteMgt
 
     public RespuestaIniciarSesion IniciarSesion(PersonaModelo persona)
     {
+        //persona.LlenarPropiedades();
         HttpResponseMessage respuesta = 
             this._cliente.PostAsJsonAsync(
                 "miembros", 
-                persona
+                new { email = persona.Email, contrasena = persona.Miembros.ElementAt(0).Contrasena}
             ).Result;
-        respuesta.EnsureSuccessStatusCode();
+        ValidadorRespuestaHttp.Validar(respuesta);
         return respuesta.Content
                         .ReadAsAsync<RespuestaIniciarSesion>()
                         .Result;

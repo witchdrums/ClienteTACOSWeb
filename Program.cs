@@ -15,7 +15,7 @@ builder.Services.AddSingleton<IMenuMgt, MenuMgr>();
 builder.Services.AddSingleton<IConsultanteMgt, ConsultanteMgr>();
 builder.Services.AddHttpClient("tacos", client => 
 {
-    client.BaseAddress = new Uri("http://localhost:5087/");
+    client.BaseAddress = new Uri("http://localhost:5174/");
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 

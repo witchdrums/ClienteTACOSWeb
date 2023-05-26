@@ -25,11 +25,12 @@ public class MenuMgr : IMenuMgt
     }
     public async Task CargarMenu()
     {
-        var response = _cliente.GetAsync("menu/alimentos").Result;
+        var response = _cliente.GetAsync("menu").Result;
         response.EnsureSuccessStatusCode();
 
         menu = response.Content.ReadAsAsync<List<AlimentoModelo>>().Result;
 
+        
         HashSet<int> idImagenes = new HashSet<int>();
         int numAlimentos = menu.Count();
         for (int i = 0; i < numAlimentos; i++)
@@ -51,7 +52,7 @@ public class MenuMgr : IMenuMgt
                 }
             }
         }
-
+        
     }
     
     public AlimentoModelo ObtenerAlimento(int idAlimento)
@@ -97,4 +98,14 @@ public class MenuMgr : IMenuMgt
         return imagenesObtenidas;
     }
 
+    public void ActualizarExistenciaAlimentos(Dictionary<int, int> idAlimentos_Cantidades)
+    {
+        HttpResponseMessage respuesta =
+            this._cliente.PatchAsJsonAsync(
+                "menu/alimentos",
+                idAlimentos_Cantidades
+            ).Result;
+        ValidadorRespuestaHttp.Validar(respuesta);
+
+    }
 }

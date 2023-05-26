@@ -14,18 +14,25 @@
   </div> 
 </nav>
 
+@if (Model.Error==true)
+{
+    <div class="alert alert-danger" role="alert">
+        @Model.MensajeError
+    </div>
+}
+
 <div class="tab-content d-flex justify-content-center" id="nav-tabContent">
   <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
     <form method="post" asp-page-handler="entrar">
       <!-- Email input -->
       <div class="form-outline mb-4">
-        <input type="email" id="loginName" class="form-control" asp-for="Email"/>
+        <input type="email" id="loginName" class="form-control" asp-for="@Model.Persona.Email"/>
         <label class="form-label" for="loginName">Email</label>
       </div>
 
       <!-- Password input -->
       <div class="form-outline mb-4">
-        <input type="password" id="loginPassword" class="form-control" asp-for="Contrasena"/>
+        <input type="password" id="loginPassword" class="form-control" asp-for="Contrasena" />
         <label class="form-label" for="loginPassword">Contraseña</label>
       </div>
 
@@ -43,44 +50,52 @@
       <!-- Name input -->
       <div class="form-outline mb-1">
         <input type="text" id="registerName" class="form-control" asp-for="@Model.Persona.Nombre"/>
-        <label class="form-label" for="registerName">Name</label>
+        <label class="form-label" asp-for="@Model.Persona.Nombre" for="registerName"></label>
+        <span asp-validation-for="@Model.Persona.Nombre" class="text-danger"></span>
       </div>
 
       <div class="form-outline mb-1">
          <input type="text" id="apellidoPaterno" class="form-control" asp-for="@Model.Persona.ApellidoPaterno" />
-        <label class="form-label" for="apellidoPaterno">Apellido Paterno</label>
+        <label class="form-label" asp-for="@Model.Persona.ApellidoPaterno" for="apellidoPaterno"></label>
+        <span asp-validation-for="@Model.Persona.ApellidoPaterno" class="text-danger"></span>
       </div>
 
       <div class="form-outline mb-1">
         <input type="text" id="apellidoMaterno" class="form-control" asp-for="@Model.Persona.ApellidoMaterno"/>
-        <label class="form-label" for="apellidoMaterno">Apellido Materno</label>
+        <label class="form-label" for="apellidoMaterno" asp-for="@Model.Persona.ApellidoMaterno">Apellido Materno</label>
+        <span asp-validation-for="@Model.Persona.ApellidoMaterno" class="text-danger"></span>
       </div>
       <!-- Username input -->
       <div class="form-outline mb-1">
         <input type="text" id="direccion" class="form-control" asp-for="@Model.Persona.Direccion"/>
-        <label class="form-label" for="direccion">Dirección</label>
+        <label class="form-label" for="direccion" asp-for="@Model.Persona.Direccion"></label>
+        <span asp-validation-for="@Model.Persona.Direccion" class="text-danger"></span>
       </div>
       <div class="form-outline mb-6">
-        <input type="text" id="telefono" class="form-control" />
-        <label class="form-label" for="telefono">Teléfono</label>
+        <input type="text" id="telefono" class="form-control" asp-for="@Model.Persona.Telefono"/>
+        <label class="form-label" for="telefono" asp-for="@Model.Persona.Telefono"></label>
+        <span asp-validation-for="@Model.Persona.Telefono" class="text-danger"></span>
       </div>
       <!-- Email input -->
       <div class="form-outline mb-1">
         <input type="email" id="registerEmail" class="form-control" asp-for="@Model.Persona.Email"/>
-        <label class="form-label" for="registerEmail">Email</label>
+        <label class="form-label" for="registerEmail" asp-for="@Model.Persona.Email">Email</label>
+        <span asp-validation-for="@Model.Persona.Email" class="text-danger"></span>
       </div>
 
 
       <!-- Password input -->
       <div class="form-outline mb-1">
-        <input type="password" id="registerPassword" class="form-control" asp-for="Contrasena" />
-        <label class="form-label" for="registerPassword">Contraseña</label>
+                <input type="password" id="registerPassword" class="form-control" asp-for="Contrasena" />
+        <label class="form-label" for="registerPassword" >Contraseña</label>
+        <span asp-validation-for="Contrasena" class="text-danger"></span>
       </div>
 
       <!-- Repeat Password input -->
       <div class="form-outline mb-1">
         <input type="password" id="registerRepeatPassword" class="form-control" asp-for="ContrasenaConfirmacion"/>
         <label class="form-label" for="registerRepeatPassword">Confirma tu contraseña</label>
+        <span asp-validation-for="ContrasenaConfirmacion" class="text-danger"></span>
       </div>
 
       <!-- Checkbox -->

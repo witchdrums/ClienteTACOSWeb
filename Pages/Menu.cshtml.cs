@@ -36,10 +36,9 @@ public class MenuModel : PageModel
     //funciona con post
     public void OnPostAgregarAlimentoAPedido()
     {
-        
-        this._consultante.AgregarAlimentoAPedido(
-            this._menu.ObtenerAlimento(this.idCurso)
-        );
+        AlimentoModelo alimento = this._menu.ObtenerAlimento(this.idCurso);
+        this._consultante.AgregarAlimentoAPedido(alimento);
+        this._menu.ActualizarExistenciaAlimentos(new Dictionary<int, int> { { alimento.Id, -1 } });
         //this._pedido.Add(alimento);
     }
 

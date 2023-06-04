@@ -33,7 +33,6 @@ public class MenuModel : PageModel
         await this._menu.CargarMenu();
     }
 
-    //funciona con post
     public void OnPostAgregarAlimentoAPedido()
     {
         AlimentoModelo alimento = this._menu.ObtenerAlimento(this.idCurso);
@@ -47,7 +46,15 @@ public class MenuModel : PageModel
         if (Request.HttpContext.Session.GetString("Token") is null)
         {
             Response.Redirect("IniciarSesion");
-        }   
-        //this._pedido.Add(alimento);
+        }else
+        {
+            this._consultante.RegistrarPedido();
+        }
+        
+    }
+
+    public void OnPostCancelar()
+    {
+        this._menu.ActualizarExistenciaAlimentos(this._consultante.CancelarPedido());
     }
 }

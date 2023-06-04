@@ -9,9 +9,9 @@ namespace ClienteTACOSWeb.Pages;
 
 public class IniciarSesionModel : PageModel
 {
-    private readonly ILogger<IniciarSesionModel> _logger;
-    public IConsultanteMgt _consultante { get; set; }
-    private Microsoft.AspNetCore.Hosting.IWebHostEnvironment _env;
+    private readonly ILogger<IniciarSesionModel> logger;
+    public IConsultanteMgt consultante { get; set; }
+    private Microsoft.AspNetCore.Hosting.IWebHostEnvironment env;
     [BindProperty(SupportsGet = true)]
 
     [Required(ErrorMessage = "No puede estar vacío")]
@@ -38,15 +38,17 @@ public class IniciarSesionModel : PageModel
     [BindProperty(SupportsGet = true)]
     public string MensajeError { get; set; } = "Sin mensaje";
 
-
+    private Sesion sesion;
     public IniciarSesionModel(ILogger<IniciarSesionModel> logger, 
                             Microsoft.AspNetCore.Hosting.IWebHostEnvironment env,
-                            IConsultanteMgt consultante)
+                            IConsultanteMgt consultante,
+                            Sesion sesion)
     {
-        _logger = logger;
-        _consultante = consultante;
-        _env = env;
+        this.logger = logger;
+        this.consultante = consultante;
+        this.env = env;
         this.Persona = new PersonaModelo();
+        this.sesion = sesion;
     }
 
     public void OnPostEntrar()
@@ -54,16 +56,17 @@ public class IniciarSesionModel : PageModel
         try
         {
             this.Persona.Miembros.ElementAt(0).Contrasena = this.Contrasena;
-            RespuestaIniciarSesion datosSesion = this._consultante.IniciarSesion(this.Persona);
-            _logger.LogInformation($"Email: {datosSesion.Persona.Email}");
-            _logger.LogInformation($"Contrasena: {datosSesion.Persona.Miembros.ElementAt(0).Contrasena}");
-            _logger.LogInformation($"Respuesta: {datosSesion}");
-            if (datosSesion != null)
+            this.sesion.Credenciales = this.consultante.IniciarSesion(this.Persona);
+            this.logger.LogInformation($"Email: {this.sesion.Credenciales.Miembro.Persona.Email}");
+            this.logger.LogInformation($"Contrasena: {this.sesion.Credenciales.Miembro.Contrasena}");
+            this.logger.LogInformation($"Respuesta: {this.sesion.Credenciales}");
+            if (this.sesion.Credenciales != null)
             {
-                Request.HttpContext.Session.SetString("Email", datosSesion.Persona.Email);
-                Request.HttpContext.Session.SetString("Token", datosSesion.Token);
-                Request.HttpContext.Session.SetString("Nombre", datosSesion.Persona.Nombre);
-                Response.Redirect("Menu");
+                this.Request.HttpContext.Session.SetString("Email", this.sesion.Credenciales.Miembro.Persona.Email);
+                this.Request.HttpContext.Session.SetString("Token", this.sesion.Credenciales.Token);
+                this.consultante.Token = this.sesion.Credenciales.Token;
+                this.Request.HttpContext.Session.SetString("Nombre", this.sesion.Credenciales.Miembro.Persona.Nombre);
+                this.Response.Redirect("Menu");
             }
         }
         catch (Exception e)
@@ -85,7 +88,7 @@ public class IniciarSesionModel : PageModel
             try
             {
                 this.Persona.Miembros.ElementAt(0).Contrasena = this.Contrasena;
-                await this._consultante.RegistrarMiembro(Persona);
+                await this.consultante.RegistrarMiembro(Persona);
             }
             catch (Exception a)
             {

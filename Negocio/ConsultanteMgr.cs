@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
-
+using System.Net.Http.Headers;
 
 public class ConsultanteMgr : IConsultanteMgt
 {
@@ -12,10 +12,14 @@ public class ConsultanteMgr : IConsultanteMgt
     PedidoModelo pedido = new PedidoModelo();
     List<PedidoModelo> pedidos = new List<PedidoModelo>();
     double total = 0;
-    HttpClient _cliente;
-    public ConsultanteMgr(IHttpClientFactory fcliente) 
+    public string Token { set; get; } 
+    HttpClient cliente;
+    private Sesion sesion;
+    public ConsultanteMgr(IHttpClientFactory fcliente,
+                          Sesion sesion) 
     {
-        _cliente = fcliente.CreateClient("tacos");
+        this.cliente = fcliente.CreateClient("tacos");
+        this.sesion = sesion;
         //CursosAPI _cursosAPI
     }
 
@@ -33,19 +37,31 @@ public class ConsultanteMgr : IConsultanteMgt
         this.pedido.Total += alimento.Precio;
     }
 
-    public RespuestaIniciarSesion IniciarSesion(PersonaModelo persona)
+    public Credenciales IniciarSesion(PersonaModelo persona)
     {
         //persona.LlenarPropiedades();
         HttpResponseMessage respuesta = 
-            this._cliente.PostAsJsonAsync(
-                "miembros", 
+            this.cliente.PostAsJsonAsync(
+                "login", 
                 new { email = persona.Email, contrasena = persona.Miembros.ElementAt(0).Contrasena}
             ).Result;
         ValidadorRespuestaHttp.Validar(respuesta);
         return respuesta.Content
-                        .ReadAsAsync<RespuestaIniciarSesion>()
+                        .ReadAsAsync<Credenciales>()
                         .Result;
         
+    }
+
+    public Dictionary<int, int> CancelarPedido()
+    {
+        Dictionary<int,int> existenciasARegresar = new Dictionary<int,int>();
+        foreach (KeyValuePair<int,AlimentoModelo> registro in this.pedido.Alimentos)
+        {
+            existenciasARegresar.Add(registro.Key, registro.Value.Cantidad);
+            registro.Value.Cantidad = 0;
+        }
+        this.pedido = new PedidoModelo();
+        return existenciasARegresar;
     }
 
     public PersonaModelo ObtenerMiembroEnSesion()
@@ -58,9 +74,12 @@ public class ConsultanteMgr : IConsultanteMgt
         return this.pedido;
     }
 
-    public List<PedidoModelo> ObtenerPedidos()
+    public List<PedidoModelo> ObtenerPedidos(DateTime desde, DateTime hasta)
     {
-        HttpResponseMessage respuesta = this._cliente.GetAsync("pedidos").Result;
+        HttpResponseMessage respuesta = this.cliente.PostAsJsonAsync(
+            "pedidos/ObtenerPedidosEntre",
+            new { desde, hasta}
+       ).Result;
         respuesta.EnsureSuccessStatusCode();
         this.pedidos = respuesta.Content
                         .ReadAsAsync<List<PedidoModelo>>()
@@ -70,8 +89,9 @@ public class ConsultanteMgr : IConsultanteMgt
 
     public async void ActualizarPedido(PedidoSimple pedido)
     {
-
-        HttpResponseMessage respuesta= await this._cliente.PatchAsJsonAsync(
+        this.cliente.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", this.Token);
+        HttpResponseMessage respuesta= await this.cliente.PatchAsJsonAsync(
             "pedidos",
             pedido
         );
@@ -90,10 +110,31 @@ public class ConsultanteMgr : IConsultanteMgt
 
     public async Task RegistrarMiembro(PersonaModelo persona)
     {
-        ValidadorRespuestaHttp.Validar(await this._cliente.PostAsJsonAsync(
-            "persona",
+        ValidadorRespuestaHttp.Validar(await this.cliente.PostAsJsonAsync(
+            "miembro",
             persona
         ));
 
+    }
+
+    public void RegistrarPedido()
+    {
+        foreach (KeyValuePair<int,AlimentoModelo> registro in this.pedido.Alimentos)
+        {
+            this.pedido.Alimentospedidos.Add(
+                new AlimentoPedidoModelo { 
+                    IdAlimento=registro.Key, 
+                    Cantidad=registro.Value.Cantidad
+                });
+        }
+        this.pedido.IdMiembro=sesion.Credenciales.Miembro.Id;
+        this.cliente.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", this.Token);
+        HttpResponseMessage respuesta= this.cliente.PostAsJsonAsync(
+            "pedidos",
+            pedido
+        ).Result;
+        this.pedido = new PedidoModelo();
+        respuesta.EnsureSuccessStatusCode();
     }
 }

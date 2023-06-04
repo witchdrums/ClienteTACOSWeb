@@ -13,6 +13,8 @@ builder.Services.AddControllers()
 builder.Services.AddRazorPages();
 builder.Services.AddSingleton<IMenuMgt, MenuMgr>();
 builder.Services.AddSingleton<IConsultanteMgt, ConsultanteMgr>();
+builder.Services.AddSingleton<IConsultanteMgt, ConsultanteMgr>();
+builder.Services.AddSingleton<Sesion>();
 builder.Services.AddHttpClient("tacos", client => 
 {
     client.BaseAddress = new Uri("http://localhost:5174/");

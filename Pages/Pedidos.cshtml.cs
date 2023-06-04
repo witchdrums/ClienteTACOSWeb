@@ -16,6 +16,15 @@ public class PedidosModel : PageModel
     [BindProperty(SupportsGet=true)]
     public int IdPedido {get; set; }
     public int IdEstado {get; set; }
+
+    [BindProperty(SupportsGet = true)]
+    public DateTime Desde { get; set; } = DateTime.Now.AddMonths(-1);
+    [BindProperty(SupportsGet = true)]
+    public DateTime Hasta { get; set; } = DateTime.Now;
+
+    [BindProperty(SupportsGet = true)]
+    public List<PedidoModelo> Pedidos { set; get; } = new List<PedidoModelo>();
+
     public PedidosModel(ILogger<PedidosModel> logger, 
                        Microsoft.AspNetCore.Hosting.IWebHostEnvironment env,
                        IConsultanteMgt consultante)
@@ -24,6 +33,11 @@ public class PedidosModel : PageModel
         _consultante = consultante;
         this._env = env;
         this.Estados = Enum.GetValues(typeof(Estados)).Cast<Estados>().ToList();
+    }
+
+    public void OnGet()
+    {
+        this.OnPostObtenerPedidosEntre();
     }
     
     public void OnPostActualizarPedido()
@@ -34,5 +48,9 @@ public class PedidosModel : PageModel
         this._consultante.ActualizarPedido(pedido);
     }
 
-
+    public void OnPostObtenerPedidosEntre()
+    {
+        this.Pedidos.Clear();
+        this.Pedidos = _consultante.ObtenerPedidos(this.Desde, this.Hasta);
+    }
 }

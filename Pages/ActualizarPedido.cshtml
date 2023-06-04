@@ -31,6 +31,38 @@
                 }
             </select>
         </h4>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Alimento</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var alimentoPedido in Model._consultante.ObtenerPedido().Alimentospedidos)
+                {
+                    <tr>
+                        <td>
+                            @alimentoPedido.Alimento.Nombre
+                        </td>
+                        <td>
+                            @alimentoPedido.Alimento.PrecioStr
+                        </td>
+                        <td>
+                            @alimentoPedido.Cantidad
+                        </td>
+                        <td>
+                            @alimentoPedido.Subtotal
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
         <hr>
 
         <div class="d-flex  justify-content-end">

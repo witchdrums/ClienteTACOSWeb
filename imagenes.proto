@@ -19,5 +19,5 @@ message Imagen{
 }
 
 service ImagenesService{
-  rpc ObtenerImagenes(ImagenesRequest) returns (ImagenesResponse);
+  rpc ObtenerImagenes(ImagenesRequest) returns (ImagenesResponse); 
 }

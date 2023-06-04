@@ -91,10 +91,15 @@ img{
                         </div>
                             
                     </td>
-                    <td class="align-middle">@registro.Value.Cantidad</td>
-                    <td class="align-middle">
+                    <td class="align-middle text-center">@registro.Value.Cantidad</td>
+                    <td class="align-middle text-center">
                         @registro.Value.Subtotal
-                    </td>  
+                    </td>
+                    <td class="align-middle text-center">
+                        <a href="#">
+                            <i class="col-sm-6 text-danger fa-solid fa-trash"></i>
+                        </a>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -109,9 +114,12 @@ img{
                 Ordenar
             </Button>
         </form>
-        <Button  class="bd-highlight btn btn-secondary">
-            Cancelar
-        </Button>
+        <form method="post" asp-page-handler="Cancelar">
+            <Button type="submit" class="bd-highlight btn btn-secondary">
+                Cancelar
+            </Button>
+        </form>
+
     </div>
 
 </div>

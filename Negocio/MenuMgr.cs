@@ -102,10 +102,15 @@ public class MenuMgr : IMenuMgt
     {
         HttpResponseMessage respuesta =
             this._cliente.PatchAsJsonAsync(
-                "menu/alimentos",
+                "menu",
                 idAlimentos_Cantidades
             ).Result;
         ValidadorRespuestaHttp.Validar(respuesta);
-
+        foreach (KeyValuePair<int,int> registro in idAlimentos_Cantidades)
+        {
+            this.menu
+                .FirstOrDefault(a => a.Id == registro.Key)
+                .Existencia += registro.Value;
+        }
     }
 }

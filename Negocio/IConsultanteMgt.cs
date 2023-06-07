@@ -21,4 +21,5 @@ public interface IConsultanteMgt{
     public Dictionary<int, int> CancelarPedido();
 
     public void RegistrarPedido();
+    public List<ResenaModelo> ObtenerResenas();
 }

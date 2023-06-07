@@ -5,18 +5,10 @@ VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClienteTACOSWeb", "ClienteTACOSWeb.csproj", "{12E56444-5488-4CD5-AAF1-89CB6D5BF318}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TACOS", "..\API-TACOS-CSharp2\TACOS.csproj", "{19F84F67-1CC2-43A1-89E4-81145B5FADB3}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "proto", "proto", "{00C0C994-4DF4-4DA2-8B14-33CC9E673595}"
 	ProjectSection(SolutionItems) = preProject
 		imagenes.proto = imagenes.proto
 	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TACOSImagenesAPI", "..\TACOSImagenesAPI\TACOSImagenesAPI.csproj", "{B7E31E28-CDCB-4CF2-8181-6ED64DD253AA}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TACOSMenuAPI", "..\API-TACOS-CSharp2\TACOSMenuAPI\TACOSMenuAPI.csproj", "{F504BEEB-D11F-40DC-AAC4-D6BAC8189F13}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TACOSGateway", "..\API-TACOS-CSharp2\TACOSGateway\TACOSGateway.csproj", "{0507DC6C-8001-4C53-AB17-2373C28E5A38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,22 +20,6 @@ Global
 		{12E56444-5488-4CD5-AAF1-89CB6D5BF318}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12E56444-5488-4CD5-AAF1-89CB6D5BF318}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12E56444-5488-4CD5-AAF1-89CB6D5BF318}.Release|Any CPU.Build.0 = Release|Any CPU
-		{19F84F67-1CC2-43A1-89E4-81145B5FADB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19F84F67-1CC2-43A1-89E4-81145B5FADB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{19F84F67-1CC2-43A1-89E4-81145B5FADB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{19F84F67-1CC2-43A1-89E4-81145B5FADB3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B7E31E28-CDCB-4CF2-8181-6ED64DD253AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B7E31E28-CDCB-4CF2-8181-6ED64DD253AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B7E31E28-CDCB-4CF2-8181-6ED64DD253AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B7E31E28-CDCB-4CF2-8181-6ED64DD253AA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F504BEEB-D11F-40DC-AAC4-D6BAC8189F13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F504BEEB-D11F-40DC-AAC4-D6BAC8189F13}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F504BEEB-D11F-40DC-AAC4-D6BAC8189F13}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F504BEEB-D11F-40DC-AAC4-D6BAC8189F13}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0507DC6C-8001-4C53-AB17-2373C28E5A38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0507DC6C-8001-4C53-AB17-2373C28E5A38}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0507DC6C-8001-4C53-AB17-2373C28E5A38}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0507DC6C-8001-4C53-AB17-2373C28E5A38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -11,6 +11,7 @@ public class ConsultanteMgr : IConsultanteMgt
     private PersonaModelo miembroEnSesion = new PersonaModelo();
     PedidoModelo pedido = new PedidoModelo();
     List<PedidoModelo> pedidos = new List<PedidoModelo>();
+    List<ResenaModelo>? resenas;
     double total = 0;
     public string Token { set; get; } 
     HttpClient cliente;
@@ -136,5 +137,24 @@ public class ConsultanteMgr : IConsultanteMgt
         ).Result;
         this.pedido = new PedidoModelo();
         respuesta.EnsureSuccessStatusCode();
+    }
+
+    /*public async Task ObtenerResenas2()
+    {
+        var response = cliente.GetAsync("Resenas").Result;
+        response.EnsureSuccessStatusCode();
+        this.resenas = response.Content.ReadAsAsync<List<ResenaModelo>>().Result;
+    }*/
+
+    public List<ResenaModelo> ObtenerResenas()
+    {
+        try {            
+            var response = cliente.GetAsync("Resenas").Result;
+            response.EnsureSuccessStatusCode();
+            resenas = response.Content.ReadAsAsync<List<ResenaModelo>>().Result;
+            return resenas;
+        } catch (AggregateException) {
+            return new List<ResenaModelo>();
+        }
     }
 }

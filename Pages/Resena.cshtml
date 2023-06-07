@@ -1,0 +1,46 @@
+@page
+@using ClienteTACOSWeb.Modelos
+
+@model ResenaModel
+@{
+    ViewData["Title"] = "Reseñas";    
+}
+
+<style>
+img{
+    width:100%;
+    max-width:150px;
+}
+</style>
+
+<div class="d-flex flex-row">
+        <h1>Reseñas</h1>
+</div>
+
+<table class="table table-bordered  table-hover .w-auto">
+    <tbody>
+        @foreach (var resena in Model._consultante.ObtenerResenas())
+        {
+            <tr>
+                <td class="d-flex justify-content-center ">
+                    <img src="@resena.ImagenConvertida"
+                         width="70%"
+                         height="70%">
+                </td>
+                <td class="align-middle">
+                    <div class="d-flex flex-column">
+                        <div><big>@resena.Fecha</big></div>
+                        <div>@resena.Descripcion</div>
+                    </div>
+
+                </td>
+                <td class="align-middle col-sm-1">
+                    <button class="btn btn-primary">
+
+                        <i class="fa-solid fa-circle-plus"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

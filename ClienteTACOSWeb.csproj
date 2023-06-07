@@ -14,6 +14,10 @@
 		<Protobuf Include="./*.proto" OutputDir="%(RelativePath)ProtoModelos/" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Remove="Pages\Resenas.cshtml" />
+	</ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.23.1" />
     <PackageReference Include="Grpc" Version="2.46.6" />
@@ -37,6 +41,15 @@
 
   <ItemGroup>
     <None Include="C:\Users\52228\source\repos\ClienteTACOSWeb\.editorconfig" />
+    <None Include="Pages\Resenas.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Resenas.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Resenas.cshtml" />
   </ItemGroup>
 
 </Project>

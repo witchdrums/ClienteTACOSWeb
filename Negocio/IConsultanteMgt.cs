@@ -22,4 +22,6 @@ public interface IConsultanteMgt{
 
     public void RegistrarPedido();
     public List<ResenaModelo> ObtenerResenas();
+
+    public HttpResponseMessage EliminarResena(int idResena);
 }

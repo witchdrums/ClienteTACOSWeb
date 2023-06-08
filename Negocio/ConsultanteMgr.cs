@@ -157,4 +157,12 @@ public class ConsultanteMgr : IConsultanteMgt
             return new List<ResenaModelo>();
         }
     }
+
+    public HttpResponseMessage EliminarResena(int idResena)
+    {
+        var url = $"Resenas?idResena={idResena}";
+        var response = this.cliente.PostAsync(url, null).Result;
+        return response;
+    }
+
 }

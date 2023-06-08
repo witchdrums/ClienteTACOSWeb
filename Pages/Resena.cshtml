@@ -29,18 +29,36 @@ img{
                 </td>
                 <td class="align-middle">
                     <div class="d-flex flex-column">
-                        <div><big>@resena.Fecha</big></div>
-                        <div>@resena.Descripcion</div>
+                        <div><strong>@resena.Miembro.Persona.NombreUsuario</strong></div>
+                        <div><strong>@resena.Fecha.ToString("dd 'de' MMMM 'de' yyyy")</strong></div>
+                        <div style="margin-bottom: 10px;">@resena.Descripcion</div>
                     </div>
 
                 </td>
                 <td class="align-middle col-sm-1">
-                    <button class="btn btn-primary">
-
-                        <i class="fa-solid fa-circle-plus"></i>
-                    </button>
+                    <form method="post" asp-page-handler="EliminarResena" asp-route-resenaId="@resena.Id">
+                        <button class="btn btn-primary" 
+                            onclick="return confirm('¿Estás seguro de que deseas eliminar esta reseña?');">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
                 </td>
+
             </tr>
         }
     </tbody>
 </table>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @Model.ErrorMessage
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success" role="alert">
+        @Model.SuccessMessage
+    </div>
+}

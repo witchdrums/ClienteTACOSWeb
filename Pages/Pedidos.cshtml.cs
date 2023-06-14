@@ -43,7 +43,7 @@ public class PedidosModel : PageModel
     public void OnPostActualizarPedido()
     {
         PedidoSimple pedido = 
-            new PedidoSimple(this._consultante.ObtenerPedidoLocal(this.IdPedido));
+            new PedidoSimple(this._consultante.SeleccionarPedido(this.IdPedido));
         pedido.Estado = this.IdEstado;
         this._consultante.ActualizarPedido(pedido);
     }

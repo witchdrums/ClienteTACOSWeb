@@ -26,22 +26,26 @@
     <form method="post" asp-page-handler="entrar">
       <!-- Email input -->
       <div class="form-outline mb-4">
-        <input type="email" id="loginName" class="form-control" asp-for="@Model.Persona.Email"/>
+        <input type="email" id="loginName" class="form-control" asp-for="@Model.PeticionCredenciales.Email"/>
         <label class="form-label" for="loginName">Email</label>
       </div>
 
       <!-- Password input -->
       <div class="form-outline mb-4">
-        <input type="password" id="loginPassword" class="form-control" asp-for="Contrasena" />
+        <input type="password" id="loginPassword" class="form-control" asp-for="@Model.PeticionCredenciales.Contrasena" />
         <label class="form-label" for="loginPassword">Contraseña</label>
       </div>
 
       <!-- Submit button -->
       <button type="submit" class="btn btn-primary btn-block mb-4">Entrar</button>
+            <!-- Checkbox -->
 
-      <!-- Register buttons -->
-      <div class="text-center">
-        <p>¿Aún no eres miembro? <a href="#!">¡Únete!</a></p>
+      <div class="form-check d-flex justify-content-center mb-4">
+      <input class="form-check-input me-2" type="checkbox" value="true" asp-for="@Model.PeticionCredenciales.EsStaff" aria-describedby="registerCheckHelpText" />
+        <input name="EsStaff" type="hidden" value="false">
+        <label class="form-check-label" for="registerCheck">
+          Soy staff
+        </label>
       </div>
     </form>
   </div>
@@ -49,38 +53,38 @@
     <form method="post" asp-page-handler="Unirse">
       <!-- Name input -->
       <div class="form-outline mb-1">
-        <input type="text" id="registerName" class="form-control" asp-for="@Model.Persona.Nombre"/>
-        <label class="form-label" asp-for="@Model.Persona.Nombre" for="registerName"></label>
-        <span asp-validation-for="@Model.Persona.Nombre" class="text-danger"></span>
+        <input type="text" id="registerName" class="form-control" asp-for="@Model.Miembro.Persona.Nombre"/>
+        <label class="form-label" asp-for="@Model.Miembro.Persona.Nombre" for="registerName"></label>
+        <span asp-validation-for="@Model.Miembro.Persona.Nombre" class="text-danger"></span>
       </div>
 
       <div class="form-outline mb-1">
-         <input type="text" id="apellidoPaterno" class="form-control" asp-for="@Model.Persona.ApellidoPaterno" />
-        <label class="form-label" asp-for="@Model.Persona.ApellidoPaterno" for="apellidoPaterno"></label>
-        <span asp-validation-for="@Model.Persona.ApellidoPaterno" class="text-danger"></span>
+         <input type="text" id="apellidoPaterno" class="form-control" asp-for="@Model.Miembro.Persona.ApellidoPaterno" />
+        <label class="form-label" asp-for="@Model.Miembro.Persona.ApellidoPaterno" for="apellidoPaterno"></label>
+        <span asp-validation-for="@Model.Miembro.Persona.ApellidoPaterno" class="text-danger"></span>
       </div>
 
       <div class="form-outline mb-1">
-        <input type="text" id="apellidoMaterno" class="form-control" asp-for="@Model.Persona.ApellidoMaterno"/>
-        <label class="form-label" for="apellidoMaterno" asp-for="@Model.Persona.ApellidoMaterno">Apellido Materno</label>
-        <span asp-validation-for="@Model.Persona.ApellidoMaterno" class="text-danger"></span>
+        <input type="text" id="apellidoMaterno" class="form-control" asp-for="@Model.Miembro.Persona.ApellidoMaterno"/>
+        <label class="form-label" for="apellidoMaterno" asp-for="@Model.Miembro.Persona.ApellidoMaterno">Apellido Materno</label>
+        <span asp-validation-for="@Model.Miembro.Persona.ApellidoMaterno" class="text-danger"></span>
       </div>
       <!-- Username input -->
       <div class="form-outline mb-1">
-        <input type="text" id="direccion" class="form-control" asp-for="@Model.Persona.Direccion"/>
-        <label class="form-label" for="direccion" asp-for="@Model.Persona.Direccion"></label>
-        <span asp-validation-for="@Model.Persona.Direccion" class="text-danger"></span>
+        <input type="text" id="direccion" class="form-control" asp-for="@Model.Miembro.Persona.Direccion" />
+        <label class="form-label" for="direccion" asp-for="@Model.Miembro.Persona.Direccion"></label>
+        <span asp-validation-for="@Model.Miembro.Persona.Direccion" class="text-danger"></span>
       </div>
       <div class="form-outline mb-6">
-        <input type="text" id="telefono" class="form-control" asp-for="@Model.Persona.Telefono"/>
-        <label class="form-label" for="telefono" asp-for="@Model.Persona.Telefono"></label>
-        <span asp-validation-for="@Model.Persona.Telefono" class="text-danger"></span>
+        <input type="text" id="telefono" class="form-control" asp-for="@Model.Miembro.Persona.Telefono" />
+        <label class="form-label" for="telefono" asp-for="@Model.Miembro.Persona.Telefono"></label>
+        <span asp-validation-for="@Model.Miembro.Persona.Telefono" class="text-danger"></span>
       </div>
       <!-- Email input -->
       <div class="form-outline mb-1">
-        <input type="email" id="registerEmail" class="form-control" asp-for="@Model.Persona.Email"/>
-        <label class="form-label" for="registerEmail" asp-for="@Model.Persona.Email">Email</label>
-        <span asp-validation-for="@Model.Persona.Email" class="text-danger"></span>
+        <input type="email" id="registerEmail" class="form-control" asp-for="@Model.Miembro.Persona.Email" />
+        <label class="form-label" for="registerEmail" asp-for="@Model.Miembro.Persona.Email">Email</label>
+        <span asp-validation-for="@Model.Miembro.Persona.Email" class="text-danger"></span>
       </div>
 
 

@@ -33,15 +33,15 @@ public class ActualizarPedidoModel : PageModel
 
     public void OnGet()
     {
-        this.Pedido = _consultante.ObtenerPedidoLocal(this.idPedido);
+        this.Pedido = _consultante.SeleccionarPedido(this.idPedido);
     }
 
     public void OnPostActualizarPedido()
     {
-        PedidoSimple? pedido = new PedidoSimple(this._consultante.ObtenerPedido());
-        pedido.Estado = this.IdEstado;
-        this._consultante.ObtenerPedido().Estado = this.IdEstado;
+        this.Pedido = _consultante.PedidoSeleccionado;
+        this.Pedido.Estado = this.IdEstado;
+        //this._consultante.ObtenerPedido().Estado = this.IdEstado;
 
-        this._consultante.ActualizarPedido(pedido);
+        this._consultante.ActualizarPedido(new PedidoSimple(this.Pedido));
     }
 }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
+using ClienteTACOSWeb.Negocio.Respuestas;
 
 
 public class MenuMgr : IMenuMgt
@@ -25,34 +26,24 @@ public class MenuMgr : IMenuMgt
     }
     public async Task CargarMenu()
     {
-        var response = _cliente.GetAsync("menu").Result;
-        response.EnsureSuccessStatusCode();
-
-        menu = response.Content.ReadAsAsync<List<AlimentoModelo>>().Result;
-
-        
-        HashSet<int> idImagenes = new HashSet<int>();
-        int numAlimentos = menu.Count();
-        for (int i = 0; i < numAlimentos; i++)
+        var respuestaHttp = _cliente.GetAsync("menu/ObtenerAlimentosConImagenes").Result;
+        respuestaHttp.EnsureSuccessStatusCode();
+        if (respuestaHttp.IsSuccessStatusCode)
         {
-            idImagenes.Add(menu.ElementAt(i).IdImagen);
+            menu = respuestaHttp.Content
+                   .ReadAsAsync<Respuesta<List<AlimentoModelo>>>()
+                   .Result
+                   .Datos;
         }
-
-        List<Modelos.Imagen> imagenes = this.ObtenerImagenes(idImagenes).Result;
-
-        int numImagenes = imagenes.Count();
-        for (int i = 0; i < numAlimentos; i++)
+        else
         {
-            for (int j = 0; j < numImagenes; j++)
-            {
-                if (menu.ElementAt(i).IdImagen
-                    == imagenes.ElementAt(j).Id)
-                {
-                    menu.ElementAt(i).Imagen = imagenes.ElementAt(j);
-                }
-            }
+            this.menu = new List<AlimentoModelo>();
+
+            var respuesta = respuestaHttp.Content
+                                         .ReadAsAsync<Respuesta<List<AlimentoModelo>>>()
+                                         .Result;
+            throw new HttpRequestException($"{(int)respuesta.Codigo}: { respuesta.Mensaje}");
         }
-        
     }
     
     public AlimentoModelo ObtenerAlimento(int idAlimento)
@@ -65,39 +56,6 @@ public class MenuMgr : IMenuMgt
         return alimentoEncontrado; 
     }
 
-    public async Task<List<Modelos.Imagen>> ObtenerImagenes(HashSet<int> idImagenes)
-    {
-        Channel channel = 
-            new Channel(
-                "localhost", 
-                7252,
-                ChannelCredentials.Insecure
-            );
-        await channel.ConnectAsync().ContinueWith((task) =>
-        {
-            if (task.Status == TaskStatus.RanToCompletion)
-                Console.WriteLine("Cliente conectado satisfactoriamente");
-        });
-
-        ImagenesRequest peticion = new ImagenesRequest();
-        peticion.Id.AddRange(idImagenes);
-        var cliente = new ImagenesService.ImagenesServiceClient(channel);
-        var respuesta = cliente.ObtenerImagenes(peticion);
-        List<Modelos.Imagen> imagenesObtenidas = new List<Modelos.Imagen>();
-        foreach (IMG.Imagen imagen in respuesta.Imagen)
-        {
-            //Console.WriteLine($"{imagen.Id}, {imagen.Nombre}, {imagen.Imagen_.ToByteArray().Length}");
-            imagenesObtenidas.Add(new Modelos.Imagen{
-                Id = imagen.Id,
-                Nombre = imagen.Nombre,
-                ImagenBytes = imagen.Imagen_.ToByteArray(),
-            });
-        }
-
-        channel.ShutdownAsync().Wait();
-        return imagenesObtenidas;
-    }
-
     public void ActualizarExistenciaAlimentos(Dictionary<int, int> idAlimentos_Cantidades)
     {
         HttpResponseMessage respuesta =
@@ -105,7 +63,7 @@ public class MenuMgr : IMenuMgt
                 "menu",
                 idAlimentos_Cantidades
             ).Result;
-        ValidadorRespuestaHttp.Validar(respuesta);
+        respuesta.EnsureSuccessStatusCode();
         foreach (KeyValuePair<int,int> registro in idAlimentos_Cantidades)
         {
             this.menu

@@ -9,10 +9,12 @@
     <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
 
-	<ItemGroup>
+	<!--
+		<ItemGroup>
 
 		<Protobuf Include="./*.proto" OutputDir="%(RelativePath)ProtoModelos/" />
 	</ItemGroup>
+	-->
 
 	<ItemGroup>
 	  <Content Remove="Pages\Resenas.cshtml" />

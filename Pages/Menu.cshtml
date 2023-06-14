@@ -52,14 +52,20 @@ img{
                         <div><small>Existencia: @alimento.Existencia</small></div>
                     </div>
                 </td>
-                <td class="align-middle col-sm-1">
-                    <button class="btn btn-primary" 
-                        disabled="@alimento.Agotado"
-                        onclick="eliminarCurso('@alimento.Id', '@alimento.Nombre');">
-                    
-                        <i class="fa-solid fa-circle-plus"></i>
-                    </button>
-                </td>    
+
+                @{
+                    if (Model.sesion.Credenciales.EsMiembro)
+                    {
+                        <td class="align-middle col-sm-1">
+                            <button class="btn btn-primary"
+                                    disabled="@alimento.Agotado"
+                                    onclick="eliminarCurso('@alimento.Id', '@alimento.Nombre');">
+
+                                <i class="fa-solid fa-circle-plus"></i>
+                            </button>
+                        </td>
+                    }
+                }  
             </tr>
         }
     </tbody>

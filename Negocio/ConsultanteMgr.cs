@@ -1,10 +1,12 @@
 namespace ClienteTACOSWeb.Negocio;
 using ClienteTACOSWeb.Modelos;
+using ClienteTACOSWeb.Negocio.Peticiones;
 using System.Collections.Generic;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
 using System.Net.Http.Headers;
+using ClienteTACOSWeb.Negocio.Respuestas;
 
 public class ConsultanteMgr : IConsultanteMgt
 {
@@ -13,9 +15,9 @@ public class ConsultanteMgr : IConsultanteMgt
     List<PedidoModelo> pedidos = new List<PedidoModelo>();
     List<ResenaModelo>? resenas;
     double total = 0;
-    public string Token { set; get; } 
     HttpClient cliente;
     private Sesion sesion;
+    public PedidoModelo PedidoSeleccionado { set; get; }
     public ConsultanteMgr(IHttpClientFactory fcliente,
                           Sesion sesion) 
     {
@@ -38,19 +40,19 @@ public class ConsultanteMgr : IConsultanteMgt
         this.pedido.Total += alimento.Precio;
     }
 
-    public Credenciales IniciarSesion(PersonaModelo persona)
+    public Credenciales IniciarSesion(PeticionCredenciales credenciales)
     {
-        //persona.LlenarPropiedades();
-        HttpResponseMessage respuesta = 
-            this.cliente.PostAsJsonAsync(
-                "login", 
-                new { email = persona.Email, contrasena = persona.Miembros.ElementAt(0).Contrasena}
-            ).Result;
-        ValidadorRespuestaHttp.Validar(respuesta);
-        return respuesta.Content
-                        .ReadAsAsync<Credenciales>()
-                        .Result;
+        HttpResponseMessage respuestaHttp = 
+            this.cliente.PostAsJsonAsync("login", credenciales).Result;
         
+        respuestaHttp.EnsureSuccessStatusCode();
+
+        Credenciales respuesta = 
+            respuestaHttp.Content
+                         .ReadAsAsync<Credenciales>()
+                         .Result;
+
+        return respuesta;
     }
 
     public Dictionary<int, int> CancelarPedido()
@@ -77,21 +79,24 @@ public class ConsultanteMgr : IConsultanteMgt
 
     public List<PedidoModelo> ObtenerPedidos(DateTime desde, DateTime hasta)
     {
+        cliente.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", this.sesion.Credenciales.Token);
         HttpResponseMessage respuesta = this.cliente.PostAsJsonAsync(
             "pedidos/ObtenerPedidosEntre",
             new { desde, hasta}
-       ).Result;
+        ).Result;
         respuesta.EnsureSuccessStatusCode();
         this.pedidos = respuesta.Content
-                        .ReadAsAsync<List<PedidoModelo>>()
-                        .Result;
+                        .ReadAsAsync<Respuesta<List<PedidoModelo>>>()
+                        .Result
+                        .Datos;
         return pedidos;
     }
 
     public async void ActualizarPedido(PedidoSimple pedido)
     {
         this.cliente.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", this.Token);
+            new AuthenticationHeaderValue("Bearer", this.sesion.Credenciales.Token);
         HttpResponseMessage respuesta= await this.cliente.PatchAsJsonAsync(
             "pedidos",
             pedido
@@ -100,22 +105,23 @@ public class ConsultanteMgr : IConsultanteMgt
         
     }
 
-    public PedidoModelo ObtenerPedidoLocal(int IdPedido)
+    public PedidoModelo SeleccionarPedido(int IdPedido)
     {
-        this.pedido = 
-            this.pedidos
-                .FirstOrDefault(p => p.Id == IdPedido) 
+        this.PedidoSeleccionado = this.pedidos
+                .FirstOrDefault(p => p.Id == IdPedido)
                 ?? new PedidoModelo();
-        return this.pedido;
+        return this.PedidoSeleccionado;
     }
 
-    public async Task RegistrarMiembro(PersonaModelo persona)
+    public void RegistrarMiembro(MiembroModelo miembro)
     {
-        ValidadorRespuestaHttp.Validar(await this.cliente.PostAsJsonAsync(
-            "miembro",
-            persona
-        ));
-
+        var respuestaHttp = this.cliente.PostAsJsonAsync( "miembro", miembro).Result;
+        respuestaHttp.EnsureSuccessStatusCode();
+        var respuesta = respuestaHttp.Content.ReadAsAsync<Respuesta<MiembroModelo>>().Result;
+        if (!respuesta.OperacionExitosa)
+        {
+            throw new HttpRequestException($"{respuesta.Mensaje}");
+        }
     }
 
     public void RegistrarPedido()
@@ -130,11 +136,12 @@ public class ConsultanteMgr : IConsultanteMgt
         }
         this.pedido.IdMiembro=sesion.Credenciales.Miembro.Id;
         this.cliente.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", this.Token);
-        HttpResponseMessage respuesta= this.cliente.PostAsJsonAsync(
-            "pedidos",
-            pedido
-        ).Result;
+            new AuthenticationHeaderValue("Bearer", this.sesion.Credenciales.Token);
+        HttpResponseMessage respuesta= 
+            this.cliente.PostAsJsonAsync(
+                "pedidos",
+                pedido
+            ).Result;
         this.pedido = new PedidoModelo();
         respuesta.EnsureSuccessStatusCode();
     }

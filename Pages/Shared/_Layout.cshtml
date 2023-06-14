@@ -30,14 +30,21 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Resena">Reseñas</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Pedidos">Pedidos</a>
-                        </li>
+                        @{
+                            string strIdPuesto = Context.Session.GetString("Puesto");
+                            if (!String.IsNullOrWhiteSpace(strIdPuesto) 
+                                && (Int32.Parse(strIdPuesto) == 1 || Int32.Parse(strIdPuesto) == 2))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Pedidos">Pedidos</a>
+                                </li>
+                            }
+                        }
                     </ul>
                 </div>
                 @{
                     var token = Context.Session.GetString("Token");
-                    if (token is null)
+                    if (String.IsNullOrWhiteSpace(Context.Session.GetString("Token")))
                     {
                         <a type="button" class="btn btn-primary" asp-page="IniciarSesion" >
                             Entrar
@@ -46,7 +53,7 @@
                     else
                     {
                         <span class="navbar-text">
-                            <strong>Bienvenido</strong> @Context.Session.GetString("Nombre")
+                            <strong>Bienvenido</strong> <a class="nav-link text-dark" asp-area="" asp-page="/Perfil">@Context.Session.GetString("Nombre")</a>
                         </span>
                     }
                 }

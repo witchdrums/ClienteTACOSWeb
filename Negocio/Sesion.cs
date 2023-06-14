@@ -9,4 +9,5 @@ public sealed class Sesion
     public bool MiembroConfirmado => Credenciales.Miembro.CodigoConfirmacion == 0;
     public ObservableCollection<AlimentoPedidoModelo> AlimentosPedidos { get; set; } =
         new ObservableCollection<AlimentoPedidoModelo>();
+
 }

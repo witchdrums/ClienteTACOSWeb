@@ -1,22 +1,24 @@
 using ClienteTACOSWeb.Modelos;
+using ClienteTACOSWeb.Negocio.Peticiones;
+
 namespace ClienteTACOSWeb.Negocio;
 public interface IConsultanteMgt{
-    public string Token { set; get; }
+    public PedidoModelo PedidoSeleccionado { get; set; }    
 
     public PedidoModelo ObtenerPedido();
     public void AgregarAlimentoAPedido(AlimentoModelo alimento);
 
-    public Credenciales IniciarSesion(PersonaModelo persona);
+    public Credenciales IniciarSesion(PeticionCredenciales credenciales);
 
     public PersonaModelo ObtenerMiembroEnSesion();
 
     public List<PedidoModelo> ObtenerPedidos(DateTime desde, DateTime hasta);
 
-    public PedidoModelo ObtenerPedidoLocal(int IdPedido);
+    public PedidoModelo SeleccionarPedido(int IdPedido);
     
     public void ActualizarPedido(PedidoSimple pedido);
 
-    public Task RegistrarMiembro(PersonaModelo persona);
+    public void RegistrarMiembro(MiembroModelo miembro);
 
     public Dictionary<int, int> CancelarPedido();
 

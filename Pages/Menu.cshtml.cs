@@ -17,15 +17,19 @@ public class MenuModel : PageModel
     [BindProperty(SupportsGet=true)]
     public int idCurso {get; set;}
 
+    public Sesion sesion { private set; get; }
+
     public MenuModel(ILogger<MenuModel> logger, 
                        Microsoft.AspNetCore.Hosting.IWebHostEnvironment env,
                        IMenuMgt menu,
-                       IConsultanteMgt consultante)
+                       IConsultanteMgt consultante,
+                       Sesion sesion)
     {
         _logger = logger;
         _menu = menu;
         _consultante = consultante;
         _env = env;
+        this.sesion = sesion;
     }
 
     public async void OnGet()
@@ -43,7 +47,7 @@ public class MenuModel : PageModel
 
     public void OnPostOrdenar()
     {
-        if (Request.HttpContext.Session.GetString("Token") is null)
+        if (String.IsNullOrWhiteSpace(Request.HttpContext.Session.GetString("Token")))
         {
             Response.Redirect("IniciarSesion");
         }else

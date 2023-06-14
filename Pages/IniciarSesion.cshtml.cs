@@ -4,6 +4,7 @@ using ClienteTACOSWeb.Modelos;
 using ClienteTACOSWeb.Negocio;
 using System.Net.Http;
 using System.ComponentModel.DataAnnotations;
+using ClienteTACOSWeb.Negocio.Peticiones;
 
 namespace ClienteTACOSWeb.Pages;
 
@@ -27,16 +28,19 @@ public class IniciarSesionModel : PageModel
     public string ContrasenaConfirmacion { get; set; }
 
     [BindProperty(SupportsGet = true)]
-    public bool esLogin { get; set; }
+    public MiembroModelo Miembro { set; get; }
 
     [BindProperty(SupportsGet = true)]
-    public PersonaModelo Persona { set; get; }
+    public PeticionCredenciales PeticionCredenciales { get; set; }
 
     [BindProperty(SupportsGet = true)]
     public bool Error { get; set; }
 
     [BindProperty(SupportsGet = true)]
     public string MensajeError { get; set; } = "Sin mensaje";
+
+    [BindProperty(SupportsGet = true)]
+    public bool EsStaff { get; set; }
 
     private Sesion sesion;
     public IniciarSesionModel(ILogger<IniciarSesionModel> logger, 
@@ -47,7 +51,7 @@ public class IniciarSesionModel : PageModel
         this.logger = logger;
         this.consultante = consultante;
         this.env = env;
-        this.Persona = new PersonaModelo();
+        this.Miembro = new MiembroModelo();
         this.sesion = sesion;
     }
 
@@ -55,17 +59,25 @@ public class IniciarSesionModel : PageModel
     {
         try
         {
-            this.Persona.Miembros.ElementAt(0).Contrasena = this.Contrasena;
-            this.sesion.Credenciales = this.consultante.IniciarSesion(this.Persona);
-            this.logger.LogInformation($"Email: {this.sesion.Credenciales.Miembro.Persona.Email}");
-            this.logger.LogInformation($"Contrasena: {this.sesion.Credenciales.Miembro.Contrasena}");
-            this.logger.LogInformation($"Respuesta: {this.sesion.Credenciales}");
+            this.Miembro.Contrasena = this.Contrasena;
+            this.sesion.Credenciales = this.consultante.IniciarSesion(this.PeticionCredenciales);
+            PersonaModelo personaObtenida = new PersonaModelo();
+            if (this.PeticionCredenciales.EsStaff)
+            {
+                personaObtenida = this.sesion.Credenciales.Staff.Persona;
+                this.Request.HttpContext.Session.SetString("Puesto", this.sesion.Credenciales.Staff.IdPuesto.ToString());
+            }
+            else
+            {
+                personaObtenida = this.sesion.Credenciales.Miembro.Persona;
+                this.Request.HttpContext.Session.SetString("Puesto", "0");
+            }
+            this.logger.LogInformation($"Email: {personaObtenida.Email}");
             if (this.sesion.Credenciales != null)
             {
-                this.Request.HttpContext.Session.SetString("Email", this.sesion.Credenciales.Miembro.Persona.Email);
+                this.Request.HttpContext.Session.SetString("Email", personaObtenida.Email);
                 this.Request.HttpContext.Session.SetString("Token", this.sesion.Credenciales.Token);
-                this.consultante.Token = this.sesion.Credenciales.Token;
-                this.Request.HttpContext.Session.SetString("Nombre", this.sesion.Credenciales.Miembro.Persona.Nombre);
+                this.Request.HttpContext.Session.SetString("Nombre", personaObtenida.Nombre);
                 this.Response.Redirect("Menu");
             }
         }
@@ -77,18 +89,19 @@ public class IniciarSesionModel : PageModel
         }
     }
 
-    public async void OnPostUnirse()
+
+    public void OnPostUnirse()
     {
         ModelState.Remove("MensajeError");
 
         var errors = ModelState.Values.SelectMany(v => v.Errors);
 
-        if (TryValidateModel(this.Persona, nameof(this.Persona)))
+        if (TryValidateModel(this.Miembro, nameof(this.Miembro)))
         {
             try
             {
-                this.Persona.Miembros.ElementAt(0).Contrasena = this.Contrasena;
-                await this.consultante.RegistrarMiembro(Persona);
+                this.Miembro.Contrasena = this.Contrasena;
+                this.consultante.RegistrarMiembro(this.Miembro);
             }
             catch (Exception a)
             {

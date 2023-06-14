@@ -8,9 +8,9 @@
 
 <title>Actualizar pedido</title>
 <h1>Actualizar pedido: <span>@Model._consultante.ObtenerPedido().Id</span></h1>
-<h4>Miembro: <span>@Model._consultante.ObtenerPedido().Miembro.Persona.NombreCompleto</span></h4>
-<h4>Fecha: <span>@Model._consultante.ObtenerPedido().Fecha</span></h4>
-<h4>Total: <span>@Model._consultante.ObtenerPedido().TotalStr</span></h4>
+<h4>Miembro: <span>@Model.Pedido.Miembro.Persona.NombreCompleto</span></h4>
+<h4>Fecha: <span>@Model.Pedido.Fecha</span></h4>
+<h4>Total: <span>@Model.Pedido.TotalStr</span></h4>
 <hr>
 <div class="form-group">
     <form method="post" asp-page-handler="ActualizarPedido">
@@ -19,13 +19,14 @@
             <select class="form-control" id="estado" asp-for="IdEstado">
                 
                 @foreach (var estado in Model.Estados){
-                    if ((int)estado != Model._consultante.ObtenerPedido().Estado){
+                    if ((int)estado != Model.Pedido.Estado)
+                    {
                         <option value= "@((int)estado)">
                             @(estado)
                         </option>
                     }else{
-                        <option selected value="@Model._consultante.ObtenerPedido().Estado">
-                            @((Estados)Model._consultante.ObtenerPedido().Estado)
+                        <option selected value="@Model.Pedido.Estado">
+                            @((Estados)Model.Pedido.Estado)
                         </option>
                     }
                 }
@@ -43,7 +44,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var alimentoPedido in Model._consultante.ObtenerPedido().Alimentospedidos)
+                @foreach (var alimentoPedido in Model.Pedido.Alimentospedidos)
                 {
                     <tr>
                         <td>

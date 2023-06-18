@@ -15,37 +15,38 @@ public class ResenaModel : PageModel
     private Microsoft.AspNetCore.Hosting.IWebHostEnvironment _env;
     public string ErrorMessage;
     public string SuccessMessage;
+    public Sesion _sesion;
+
     public ResenaModel (ILogger<ResenaModel> logger,
                        Microsoft.AspNetCore.Hosting.IWebHostEnvironment env,
-                       IConsultanteMgt consultante)
+                       IConsultanteMgt consultante, Sesion sesion)
     {
         _logger = logger;
         _consultante = consultante;
         _env = env;
+        this._sesion = sesion;
     }
 
     public void OnPostEliminarResena(int resenaId)
     {
-        /*if (Request.HttpContext.Session.GetString("Token") is null)
-        {
-            Response.Redirect("IniciarSesion");
-        }else
-        {
-            INCLUIR AQUI LA LOGICA QUE ESTA DEBAJP EN LA ENTREGA FINAL
-        }
-        */
-        HttpResponseMessage response = this._consultante.EliminarResena(resenaId);
+            HttpResponseMessage response = this._consultante.EliminarResena(resenaId);
         
-        if (!response.IsSuccessStatusCode)
-        {
-            string jsonContent = response.Content.ReadAsStringAsync().Result;
-            JObject responseObject = JObject.Parse(jsonContent);
-
-            ErrorMessage = responseObject["mensaje"].ToString();
-        }
-        else
-        {
-            SuccessMessage = "Operación Exitosa";
-        } 
+            if (!response.IsSuccessStatusCode)
+            {
+                if(((int)response.StatusCode) != StatusCodes.Status401Unauthorized){
+                    string jsonContent = response.Content.ReadAsStringAsync().Result;
+                    JObject responseObject = JObject.Parse(jsonContent);
+                    ErrorMessage = responseObject["mensaje"].ToString();
+                }
+                else
+                {
+                    Response.Redirect("IniciarSesion");
+                }
+            }
+            else
+            {
+                SuccessMessage = "Reseña borrada con éxito";
+            } 
     }
+        
 }

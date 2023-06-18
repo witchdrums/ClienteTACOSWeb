@@ -10,16 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "proto", "proto", "{00C0C994
 		imagenes.proto = imagenes.proto
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TACOS", "..\API-TACOS-CSharp\TACOS.csproj", "{B8A2368D-2E16-4AD8-B81A-4A479E3E1019}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TACOSGateway", "..\API-TACOS-CSharp\TACOSGateway\TACOSGateway.csproj", "{1A3ECE6D-AE3C-4E1D-9B6B-ED6430AD21CF}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TACOSMenuAPI", "..\API-TACOS-CSharp\TACOSMenuAPI\TACOSMenuAPI.csproj", "{670BB72B-C08B-429D-BA79-686817779038}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaDeEmail", "..\API-TACOS-CSharp\SistemaDeEmail\SistemaDeEmail.csproj", "{839AA179-1E18-46BC-B41F-E00391204EA6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JWTTokens", "..\API-TACOS-CSharp\JWTTokens\JWTTokens.csproj", "{0B20EECF-E7B8-481D-BE80-3643C0F69A7A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,26 +20,6 @@ Global
 		{12E56444-5488-4CD5-AAF1-89CB6D5BF318}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12E56444-5488-4CD5-AAF1-89CB6D5BF318}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12E56444-5488-4CD5-AAF1-89CB6D5BF318}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B8A2368D-2E16-4AD8-B81A-4A479E3E1019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B8A2368D-2E16-4AD8-B81A-4A479E3E1019}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B8A2368D-2E16-4AD8-B81A-4A479E3E1019}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B8A2368D-2E16-4AD8-B81A-4A479E3E1019}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1A3ECE6D-AE3C-4E1D-9B6B-ED6430AD21CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1A3ECE6D-AE3C-4E1D-9B6B-ED6430AD21CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1A3ECE6D-AE3C-4E1D-9B6B-ED6430AD21CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1A3ECE6D-AE3C-4E1D-9B6B-ED6430AD21CF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{670BB72B-C08B-429D-BA79-686817779038}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{670BB72B-C08B-429D-BA79-686817779038}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{670BB72B-C08B-429D-BA79-686817779038}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{670BB72B-C08B-429D-BA79-686817779038}.Release|Any CPU.Build.0 = Release|Any CPU
-		{839AA179-1E18-46BC-B41F-E00391204EA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{839AA179-1E18-46BC-B41F-E00391204EA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{839AA179-1E18-46BC-B41F-E00391204EA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{839AA179-1E18-46BC-B41F-E00391204EA6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0B20EECF-E7B8-481D-BE80-3643C0F69A7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0B20EECF-E7B8-481D-BE80-3643C0F69A7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0B20EECF-E7B8-481D-BE80-3643C0F69A7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0B20EECF-E7B8-481D-BE80-3643C0F69A7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

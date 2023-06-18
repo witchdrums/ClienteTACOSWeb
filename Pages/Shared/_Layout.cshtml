@@ -31,6 +31,15 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Resena">Reseñas</a>
                         </li>
                         @{
+                            string idPuesto = Context.Session.GetString("Puesto");
+                            if (!String.IsNullOrWhiteSpace(idPuesto) && (Int32.Parse(idPuesto) == 1))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Staff">Staff</a>
+                                </li>
+                            }
+                        }
+                        @{
                             string strIdPuesto = Context.Session.GetString("Puesto");
                             if (!String.IsNullOrWhiteSpace(strIdPuesto) 
                                 && (Int32.Parse(strIdPuesto) == 1 || Int32.Parse(strIdPuesto) == 2))

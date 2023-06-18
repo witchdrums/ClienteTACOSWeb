@@ -24,6 +24,11 @@ public interface IConsultanteMgt{
 
     public void RegistrarPedido();
     public List<ResenaModelo> ObtenerResenas();
-
     public HttpResponseMessage EliminarResena(int idResena);
+
+    public HttpResponseMessage ObtenerPuestos();
+
+    public HttpResponseMessage ObtenerTurnos();
+
+    public HttpResponseMessage RegistrarStaff(StaffModelo integranteStaff);
 }

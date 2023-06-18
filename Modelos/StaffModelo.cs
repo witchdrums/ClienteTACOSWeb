@@ -9,17 +9,19 @@ namespace ClienteTACOSWeb.Modelos;
 public class StaffModelo
 {
     public int Id { get; set; }
-    public string Contrasena { get; set; }
+    public string? Contrasena { get; set; }
     public int IdPersona { get; set; }
     public int IdPuesto { get; set; } = -1;
     public int IdTurno { get; set; }
     public PersonaModelo Persona { get; set; }
-    public  PuestoModelo Puesto { get; set; }
-    public  TurnoModelo Turno { get; set; }
+    public  PuestoModelo? Puesto { get; set; }
+    public  TurnoModelo? Turno { get; set; }
 
+/*
     public StaffModelo()
     {
         this.Persona = new PersonaModelo();
-    }
+    }*/
 }
+
 

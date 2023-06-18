@@ -1,0 +1,85 @@
+@page
+@using ClienteTACOSWeb.Modelos
+@using Microsoft.AspNetCore.Http;
+
+@model StaffModel
+@{
+    ViewData["Title"] = "Staff";    
+}
+
+<div class="d-flex flex-row">
+        <h1>Ingresar Nuevo Integrante al Staff</h1>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @Model.ErrorMessage
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success" role="alert">
+        @Model.SuccessMessage
+    </div>
+}
+<div class="tab-content d-flex justify-content-center" id="nav-tabContent">
+    <form method="post" asp-page-handler="RegistrarEstaff">
+       <div class="row">
+            <div class="col-md-6">
+                <!-- Puestos -->
+                <select class="form-select" asp-for="@Model.PuestoSeleccionadoId" asp-items="Model.PuestosSelectList"></select>
+            </div>
+            <div class="col-md-6">
+                <!-- Turnos -->
+                <select class="form-select" asp-for="@Model.TurnoSeleccionadoId" asp-items="Model.TurnosSelectList"></select>
+            </div>
+        </div>
+      <!-- Nombre -->
+      <div class="form-outline mb-1 mt-3">
+        <input type="text" id="inputNombre" class="form-control" asp-for="@Model.Staff.Persona.Nombre"/>
+        <label class="form-label" asp-for="@Model.Staff.Persona.Nombre" for="inputNombre"></label>
+        <span asp-validation-for="@Model.Staff.Persona.Nombre" class="text-danger"></span>
+      </div>
+       <!-- Apellido Paterno -->
+      <div class="form-outline mb-1">
+        <input type="text" id="inputApellidoPaterno" class="form-control" asp-for="@Model.Staff.Persona.ApellidoPaterno" />
+        <label class="form-label" asp-for="@Model.Staff.Persona.ApellidoPaterno" for="inputApellidoPaterno"></label>
+        <span asp-validation-for="@Model.Staff.Persona.ApellidoPaterno" class="text-danger"></span>
+      </div>
+       <!-- Apellido Materno -->
+      <div class="form-outline mb-1">
+        <input type="text" id="inputApellidoMaterno" class="form-control" asp-for="@Model.Staff.Persona.ApellidoMaterno"/>
+        <label class="form-label" for="inputApellidoMaterno" asp-for="@Model.Staff.Persona.ApellidoMaterno">Apellido Materno</label>
+        <span asp-validation-for="@Model.Staff.Persona.ApellidoMaterno" class="text-danger"></span>
+      </div>
+      <!-- Dirección -->
+      <div class="form-outline mb-1">
+        <input type="text" id="inputDireccion" class="form-control" asp-for="@Model.Staff.Persona.Direccion" />
+        <label class="form-label" for="inputDireccion" asp-for="@Model.Staff.Persona.Direccion"></label>
+        <span asp-validation-for="@Model.Staff.Persona.Direccion" class="text-danger"></span>
+      </div>
+       <!-- Telefono -->
+      <div class="form-outline mb-6">
+        <input type="text" id="inputTelefono" class="form-control" asp-for="@Model.Staff.Persona.Telefono" />
+        <label class="form-label" for="inputTelefono" asp-for="@Model.Staff.Persona.Telefono"></label>
+        <span asp-validation-for="@Model.Staff.Persona.Telefono" class="text-danger"></span>
+      </div>
+      <!-- Email  -->
+      <div class="form-outline mb-1">
+        <input type="email" id="inputEmail" class="form-control" asp-for="@Model.Staff.Persona.Email" />
+        <label class="form-label" for="inputEmail" asp-for="@Model.Staff.Persona.Email">Email</label>
+        <span asp-validation-for="@Model.Staff.Persona.Email" class="text-danger"></span>
+      </div>
+      <!-- Contrasena -->
+       <div class="form-outline mb-1">
+        <input type="password" id="inputContrasena" class="form-control" asp-for="Contrasena" />
+        <label class="form-label" for="inputContrasena" >Contraseña</label>
+        <span asp-validation-for="Contrasena" class="text-danger"></span>
+      </div>
+      <!-- Boton Submit -->
+      <button  class="btn btn-primary">Integrar al Staff</button>
+    </form>
+</div>
+

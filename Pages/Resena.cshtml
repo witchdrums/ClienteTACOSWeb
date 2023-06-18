@@ -17,6 +17,20 @@ img{
         <h1>Reseñas</h1>
 </div>
 
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+	<div class="alert alert-danger" role="alert">
+		@Model.ErrorMessage
+	</div>
+}
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+	<div class="alert alert-success" role="alert">
+		@Model.SuccessMessage
+	</div>
+}
+
 <table class="table table-bordered  table-hover .w-auto">
     <tbody>
         @foreach (var resena in Model._consultante.ObtenerResenas())
@@ -35,30 +49,21 @@ img{
                     </div>
 
                 </td>
-                <td class="align-middle col-sm-1">
-                    <form method="post" asp-page-handler="EliminarResena" asp-route-resenaId="@resena.Id">
-                        <button class="btn btn-primary" 
-                            onclick="return confirm('¿Estás seguro de que deseas eliminar esta reseña?');">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </form>
-                </td>
-
+                @{
+					int idPuesto = @Model._sesion.Credenciales.IdPuesto;
+					if ((idPuesto != null) && (idPuesto == 1))
+					{
+						<td class="align-middle col-sm-1">
+							<form method="post" asp-page-handler="EliminarResena" asp-route-resenaId="@resena.Id">
+								<button class="btn btn-primary"
+										onclick="return confirm('¿Estás seguro de que deseas eliminar esta reseña?');">
+									<i class="fa-solid fa-trash"></i>
+								</button>
+							</form>
+						</td>
+					}
+				}
             </tr>
         }
     </tbody>
 </table>
-
-@if (!string.IsNullOrEmpty(Model.ErrorMessage))
-{
-    <div class="alert alert-danger" role="alert">
-        @Model.ErrorMessage
-    </div>
-}
-
-@if (!string.IsNullOrEmpty(Model.SuccessMessage))
-{
-    <div class="alert alert-success" role="alert">
-        @Model.SuccessMessage
-    </div>
-}

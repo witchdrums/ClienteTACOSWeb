@@ -153,14 +153,17 @@ public class ConsultanteMgr : IConsultanteMgt
         this.resenas = response.Content.ReadAsAsync<List<ResenaModelo>>().Result;
     }*/
 
-    public List<ResenaModelo> ObtenerResenas()
+public List<ResenaModelo> ObtenerResenas()
     {
-        try {            
+        try
+        {
             var response = cliente.GetAsync("Resenas").Result;
             response.EnsureSuccessStatusCode();
             resenas = response.Content.ReadAsAsync<List<ResenaModelo>>().Result;
             return resenas;
-        } catch (AggregateException) {
+        }
+        catch (AggregateException)
+        {
             return new List<ResenaModelo>();
         }
     }
@@ -168,8 +171,38 @@ public class ConsultanteMgr : IConsultanteMgt
     public HttpResponseMessage EliminarResena(int idResena)
     {
         var url = $"Resenas?idResena={idResena}";
+        cliente.DefaultRequestHeaders.Authorization =
+          new AuthenticationHeaderValue("Bearer", this.sesion.Credenciales.Token);
         var response = this.cliente.PostAsync(url, null).Result;
         return response;
     }
 
+    public HttpResponseMessage ObtenerPuestos()
+    {
+        HttpResponseMessage respuestaHttp = new HttpResponseMessage();
+        cliente.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", this.sesion.Credenciales.Token);
+        cliente.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        respuestaHttp = cliente.GetAsync("Puestos").Result;
+        return respuestaHttp;
+    }
+
+    public HttpResponseMessage ObtenerTurnos()
+    {
+        HttpResponseMessage respuestaHttp = new HttpResponseMessage();
+        cliente.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", this.sesion.Credenciales.Token);
+        cliente.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        respuestaHttp = cliente.GetAsync("Turnos").Result;
+        return respuestaHttp;
+    }
+
+    public HttpResponseMessage RegistrarStaff(StaffModelo integranteStaff)
+    {
+        HttpResponseMessage respuestaHttp = new HttpResponseMessage();
+        cliente.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", this.sesion.Credenciales.Token);
+        respuestaHttp = cliente.PostAsJsonAsync("Staff", integranteStaff).Result;
+        return respuestaHttp;
+    }
 }

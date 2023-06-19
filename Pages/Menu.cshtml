@@ -4,32 +4,44 @@
 
 @model MenuModel
 @{
-    ViewData["Title"] = "Menú";    
+    ViewData["Title"] = "Menú";
 }
 
 <style>
-img{
+    img{
     width:100%;
     max-width:150px;
-}
+    }
 
 </style>
 
 <div class="d-flex flex-row">
-        <h1>Menú</h1>
-    <div class="p-2 d-flex justify-content-end">
-        <button type="button" class="btn btn-primary position-relative" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"  aria-controls="offcanvasScrolling">
-        Pedido
-        <i class="fa-solid fa-cart-shopping"></i>
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-            @Model._consultante.ObtenerPedido().TotalStr
-            <span class="visually-hidden">unread messages</span>
-        </span>
-        </button>
+    <h1>Menú</h1>
+    <div class="p-2 d-flex justify-content-start">
+        @{
+            if (Model.sesion.Credenciales.EsMiembro)
+            {
+                <button type="button" class="btn btn-primary position-relative" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
+                    Pedido
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        @Model._consultante.ObtenerPedido().TotalStr
+                        <span class="visually-hidden">unread messages</span>
+                    </span>
+                </button>
+            }
+            else if (Model.sesion.Credenciales.EsGerente)
+            {
+                <a class="btn btn-outline-secondary" asp-area="" asp-page="/NuevoAlimento">
+                    <i class="fa-solid fa-circle-plus"></i> Nuevo alimento
+                </a>
+            }
+        }
+
     </div>
 </div>
 
-<table class="table table-bordered  table-hover .w-auto">
+<table class="table  table-hover .w-auto">
     <tbody>
         @foreach (var alimento in Model._menu.ObtenerMenu()){
             <tr>
@@ -58,12 +70,23 @@ img{
                     {
                         <td class="align-middle col-sm-1">
                             <button class="btn btn-primary"
-                                    disabled="@alimento.Agotado"
-                                    onclick="eliminarCurso('@alimento.Id', '@alimento.Nombre');">
+                            disabled="@alimento.Agotado"
+                            onclick="eliminarCurso('@alimento.Id', '@alimento.Nombre');">
 
                                 <i class="fa-solid fa-circle-plus"></i>
                             </button>
                         </td>
+                    }
+                    else if (Model.sesion.Credenciales.EsGerente)
+                    {
+                        <td class="align-middle col-sm-1">
+                            <button class="btn btn-outline-secondary"
+                                    onclick="modificarAlimento('@alimento.Id', '@alimento.Nombre', '@alimento.Descripcion', '@alimento.Precio', '@alimento.Existencia');">
+
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                        </td>
+                            
                     }
                 }  
             </tr>
@@ -136,30 +159,56 @@ img{
         //$("#nombreCursoEliminar").html(nombre);
         //$("#dialogoEliminar").modal("show");
         $("#agregar").submit();
-    }    
+    }
+    function modificarAlimento(id, nombre, descripcion, precio, existencia) {
+        $("#id").val(id);
+        $("#id").html(id);
 
+        $("#nombre").val(nombre);
+        $("#nombre").html(nombre);
+
+        $("#descripcion").val(descripcion);
+        $("#descripcion").html(descripcion);
+
+        $("#precio").val(precio);
+        $("#precio").html(precio);
+
+        $("#existencia").val(existencia);
+        $("#existencia").html(existencia);
+        $("#dialogoModificarAlimento").modal("show");
+    }
 </script>
 
 <form method="post" id="agregar" asp-page-handler="AgregarAlimentoAPedido">
     <input type="hidden" asp-for="idCurso">
 </form>
 
-<div class="modal fade" id="dialogoIniciarSesion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">                
+<div class="modal fade" id="dialogoModificarAlimento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">                
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="post" asp-page-handler="AgregarAlimentoAPedido">
-                <input type="hidden" asp-for="idCurso">
+            <form method="post" asp-page-handler="ModificarAlimento">
                 <div class="modal-header">
-                    <h5 class="modal-title">Advertencia</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">                                
-                    </button>
+                    <h5 class="modal-title">Modificar alimento</h5>
                 </div>
-                <div class="modal-body">
-                    <p>¿Está seguro de querer eliminar el curso <span id="nombreCursoEliminar"></span>?.</p>
+                <div class="modal-body d-flex flex-column">
+                    <input type="hidden" id="id" value="@Model.idCurso" asp-for="@Model.AlimentoModificable.Id" />
+
+                    <label class="form-label" for="nombre">Nombre: </label>
+                    <input type="text" id="nombre" value="@Model.NombreAlimento" asp-for="@Model.AlimentoModificable.Nombre" />
+
+                    <label class="form-label" for="descripcion">Descripción:</label>
+                    <input type="text" id="descripcion" value="@Model.DescripcionAlimento" asp-for="@Model.AlimentoModificable.Descripcion" />
+
+                    <label class="form-label" for="precio">Precio: </label>
+                    <input type="number" id="precio" value="@Model.PrecioAlimento" asp-for="@Model.AlimentoModificable.Precio" />
+
+                    <label class="form-label" for="existencia">Existencia: </label>
+                    <input type="number" id="existencia" value="@Model.ExistenciaAlimento" asp-for="@Model.AlimentoModificable.Existencia" />
+
                 </div>
                 <div class="modal-footer">                            
-                    <button type="submit" class="btn btn-primary">Eliminar Curso</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#dialogoEliminar').modal('hide');">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Modificar alimento</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#dialogoModificarAlimento').modal('hide');">Cerrar</button>
                 </div>
             </form>
         </div>

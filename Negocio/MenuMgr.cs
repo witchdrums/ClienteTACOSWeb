@@ -45,7 +45,17 @@ public class MenuMgr : IMenuMgt
             throw new HttpRequestException($"{(int)respuesta.Codigo}: { respuesta.Mensaje}");
         }
     }
-    
+
+    public void RegistrarAlimento(AlimentoModelo alimento)
+    {
+        HttpResponseMessage respuesta =
+            this._cliente.PostAsJsonAsync(
+                "menu",
+                alimento
+            ).Result;
+        respuesta.EnsureSuccessStatusCode();
+    }
+
     public AlimentoModelo ObtenerAlimento(int idAlimento)
     {
         AlimentoModelo? alimentoEncontrado = this.menu?.FirstOrDefault(a => a.Id == idAlimento);
@@ -70,5 +80,15 @@ public class MenuMgr : IMenuMgt
                 .FirstOrDefault(a => a.Id == registro.Key)
                 .Existencia += registro.Value;
         }
+    }
+
+    public void ModificarAlimento(AlimentoModelo alimento)
+    {
+        HttpResponseMessage respuesta =
+            this._cliente.PutAsJsonAsync(
+                "menu",
+                new List<AlimentoModelo> { alimento }
+            ).Result;
+        respuesta.EnsureSuccessStatusCode();
     }
 }

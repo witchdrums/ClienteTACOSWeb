@@ -1,0 +1,34 @@
+﻿@page
+@model ClienteTACOSWeb.Pages.NuevoAlimentoModel
+@{
+}
+
+<div class="d-flex flex-row">
+    <h1>Nuevo alimento</h1>
+</div>
+<hr>
+    <form method="post" enctype="multipart/form-data" asp-action="RegistrarAlimento">
+        <div class="d-flex flex-column">
+
+            <label class="form-label" for="nombre">Nombre: </label>
+            <input type="text" id="nombre" placeholder="Nombre" asp-for="@Model.NuevoAlimento.Nombre" />
+
+            <label class="form-label" for="descripcion">Descripción:</label>
+            <input type="text" id="descripcion" placeholder="Descripción" asp-for="@Model.NuevoAlimento.Descripcion" />
+
+            <label class="form-label" for="precio">Precio: </label>
+            <input type="number" id="precio" placeholder="Precio" asp-for="@Model.NuevoAlimento.Precio" />
+
+            <label class="form-label" for="existencia">Existencia: </label>
+            <input type="number" id="existencia" placeholder="Existencia" asp-for="@Model.NuevoAlimento.Existencia" />
+
+            <label for="formFile" class="form-label">Default file input example</label>
+            <input type="file" id="formFile">
+        </div>
+        <hr>
+
+        <div class="d-flex flex-row">
+            <button type="submit" class="btn btn-primary">Registrar alimento</button>
+            <button class="btn btn-secondary">Regresar</button>
+        </div>
+    </form>

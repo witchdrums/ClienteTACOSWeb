@@ -17,6 +17,17 @@ public class MenuModel : PageModel
     [BindProperty(SupportsGet=true)]
     public int idCurso {get; set;}
 
+    [BindProperty(SupportsGet = true)]
+    public AlimentoModelo AlimentoModificable { get; set; } = new AlimentoModelo();
+
+    [BindProperty(SupportsGet = true)]
+    public string NombreAlimento { get; set; } = "";
+    [BindProperty(SupportsGet = true)]
+    public string DescripcionAlimento { get; set; } = "";
+    [BindProperty(SupportsGet = true)]
+    public int PrecioAlimento { get; set; } = 0;
+    [BindProperty(SupportsGet = true)]
+    public int ExistenciaAlimento { get; set; } = 0;
     public Sesion sesion { private set; get; }
 
     public MenuModel(ILogger<MenuModel> logger, 
@@ -60,5 +71,12 @@ public class MenuModel : PageModel
     public void OnPostCancelar()
     {
         this._menu.ActualizarExistenciaAlimentos(this._consultante.CancelarPedido());
+    }
+
+    public void OnPostModificarAlimento()
+    {
+        //this.AlimentoModificable.Id = this.idCurso;
+        this._menu.ModificarAlimento(this.AlimentoModificable);
+        this.Response.Redirect("Menu");
     }
 }

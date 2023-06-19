@@ -44,8 +44,8 @@ public class ConsultanteMgr : IConsultanteMgt
     {
         HttpResponseMessage respuestaHttp = 
             this.cliente.PostAsJsonAsync("login", credenciales).Result;
-        
-        respuestaHttp.EnsureSuccessStatusCode();
+
+        ValidadorRespuestaHttp.Validar(respuestaHttp);
 
         Credenciales respuesta = 
             respuestaHttp.Content
@@ -118,8 +118,8 @@ public class ConsultanteMgr : IConsultanteMgt
         var respuestaHttp = this.cliente.PostAsJsonAsync( "miembro", miembro).Result;
         respuestaHttp.EnsureSuccessStatusCode();
         var respuesta = respuestaHttp.Content.ReadAsAsync<Respuesta<MiembroModelo>>().Result;
-        if (!respuesta.OperacionExitosa)
-        {
+        if (!respuesta.OperacionExitosa)        {
+
             throw new HttpRequestException($"{respuesta.Mensaje}");
         }
     }

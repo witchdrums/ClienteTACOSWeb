@@ -1,4 +1,6 @@
 ﻿
+using ClienteTACOSWeb.Negocio.Respuestas;
+
 namespace ClienteTACOSWeb.Negocio
 {
     public class ValidadorRespuestaHttp
@@ -8,7 +10,7 @@ namespace ClienteTACOSWeb.Negocio
             if (!respuesta.IsSuccessStatusCode)
             {
                 throw new HttpRequestException(
-                    respuesta.Content.ReadAsAsync<Error>().Result.Mensaje
+                    respuesta.Content.ReadAsAsync<Respuesta<object>>().Result.Mensaje
                 );
             }
         }

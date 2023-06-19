@@ -83,9 +83,8 @@ public class IniciarSesionModel : PageModel
         }
         catch (Exception e)
         {
-            this.Error = true;
-            //Response.Redirect("Error");
-            this.MensajeError = e.Message;
+            this.Request.HttpContext.Session.SetString("Error", e.Message);
+            this.MostrarError();
         }
     }
 
@@ -105,18 +104,20 @@ public class IniciarSesionModel : PageModel
             }
             catch (Exception a)
             {
-                this.MostrarError(a.Message);
+                this.Request.HttpContext.Session.SetString("Error", "Verifíque su información e inténtelo de nuevo.");
+                this.MostrarError();
             }
         }
         else
         {
-            this.MostrarError("no lol");
+            this.Request.HttpContext.Session.SetString("Error", "Verifíque su información e inténtelo de nuevo.");
+            this.MostrarError();
         }
     }
 
-    private void MostrarError(string mensaje)
+    private void MostrarError()
     {
         this.Error = true;
-        this.MensajeError = "Nope lol";
+        this.MensajeError = this.Request.HttpContext.Session.GetString("Error");
     }
 }

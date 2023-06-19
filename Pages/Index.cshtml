@@ -4,7 +4,23 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<body>
+
+    <header class="bg-dark py-5">
+        <div class="container px-5">
+            <div class="row gx-5 align-items-center justify-content-center">
+                <div class="col-lg-8 col-xl-7 col-xxl-6">
+                    <div class="my-5 text-center text-xl-start">
+                        <h1 class="display-5 fw-bolder text-white mb-2">¡Bienvenidx!</h1>
+                        <p class="lead fw-normal text-white-50 mb-4">Este es el Taco API Commercial Ordering System (TACOS), el primer y único sistema diseñado para la venta de tacos a domicilio. Estás a un clic de probar nuestro delicioso (ignora las <a asp-page="Resena">reseñas</a>) menú. ¿Qué esperas?</p>
+                        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
+                            <a class="btn btn-primary btn-lg px-4 me-sm-3" asp-page="/Menu">¡Entra y comprueba!</a>
+                            <a class="btn btn-outline-light btn-lg px-4" asp-page="/Resena">Reseñas</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center"><img class="img-fluid rounded-3 my-5" src="https://mexicotravelchannel.com.mx/wp-content/uploads/2021/06/taqueria-de-eu-taquero-el-gordo-san-diego-california-Esta-.jpg" alt="..." /></div>
+            </div>
+        </div>
+    </header>
+</body>

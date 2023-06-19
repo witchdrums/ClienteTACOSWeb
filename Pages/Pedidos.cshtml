@@ -6,22 +6,28 @@
     ViewData["Title"] = "Pedidos";    
 }
 
-<h1>Pedidos</h1>
+<header class="d-flex flex-row bg-dark text-light rounded-top justify-content-between">
+    <div class="p-3 d-flex flex-column">
+        <h1>Pedidos</h1>
 
 
-<form method="post" asp-page-handler="ObtenerPedidosEntre">
-    <div class="d-flex flex-row justify-content-around btn-group-lg">
-        <div class="d-flex flex-column">
-            <label for="desde">Desde: </label>
-            <input id="desde" type="date" asp-for="Desde"/>
-        </div>
-        <div class="d-flex flex-column">
-            <label for="hasta">Hasta: </label>
-            <input id="hasta" type="date" asp-for="Hasta" />
-        </div>
-        <button type="submit" class="btn btn-primary">Consultar</button>
+        <form method="post" asp-page-handler="ObtenerPedidosEntre">
+            <div class="d-flex flex-row justify-content-between btn-group-lg">
+                <div class="d-flex flex-column">
+                    <label for="desde">Desde: </label>
+                    <input id="desde" type="date" asp-for="Desde" />
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="hasta">Hasta: </label>
+                    <input id="hasta" type="date" asp-for="Hasta" />
+                </div>
+                <button type="submit" class="btn btn-primary">Consultar</button>
+            </div>
+        </form>
     </div>
-</form>
+
+
+</header>
 
 <table class="table table-bordered  table-hover">
     <thead>

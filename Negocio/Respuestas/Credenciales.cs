@@ -10,5 +10,6 @@ public class Credenciales : RespuestaBase
 
     public int IdPuesto => this.Staff is null? -1 : this.Staff.IdPuesto;
     public bool EsMiembro => this.Miembro != null && this.Miembro.Id != 0;
-    public bool EsStaff => this.Staff != null && this.Staff.Id > 0 && this.Staff.Id < 3;
+    public bool EsStaff => this.Staff != null && this.Staff.IdPuesto > 0 && this.Staff.IdPuesto < 3;
+    public bool EsGerente => this.Staff != null && this.Staff.IdPuesto == 1;
 }

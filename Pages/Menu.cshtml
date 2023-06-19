@@ -15,30 +15,43 @@
 
 </style>
 
-<div class="d-flex flex-row">
-    <h1>Menú</h1>
-    <div class="p-2 d-flex justify-content-start">
-        @{
-            if (Model.sesion.Credenciales.EsMiembro)
+<div >
+    <header class="d-flex flex-row bg-dark rounded-top justify-content-between">
+        <div class="d-flex flex-column p-3 text-light">
+            <h1>Menú</h1>
+            @if (Model.sesion.Credenciales.EsGerente)
             {
-                <button type="button" class="btn btn-primary position-relative" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
-                    Pedido
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        @Model._consultante.ObtenerPedido().TotalStr
-                        <span class="visually-hidden">unread messages</span>
-                    </span>
-                </button>
-            }
-            else if (Model.sesion.Credenciales.EsGerente)
-            {
-                <a class="btn btn-outline-secondary" asp-area="" asp-page="/NuevoAlimento">
-                    <i class="fa-solid fa-circle-plus"></i> Nuevo alimento
-                </a>
-            }
-        }
+                <p>Presiona el botón <i class="fa-solid fa-pen-to-square"></i>  para modificar cualquier alimento.</p>
 
-    </div>
+            }
+            else
+            {
+                <p>Presiona el botón <i class="fa-solid fa-circle-plus"></i>  para agregar cualquiera de nuestros alimentos a tu pedido.</p>
+            }
+        </div>
+        <div class="p-2 d-flex">
+            @{
+                if (Model.sesion.Credenciales.EsMiembro)
+                {
+                    <button type="button" class="btn btn-primary position-relative" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
+                        Pedido
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            @Model._consultante.ObtenerPedido().TotalStr
+                            <span class="visually-hidden">unread messages</span>
+                        </span>
+                    </button>
+                }
+                else if (Model.sesion.Credenciales.EsGerente)
+                {
+                    <a class="btn btn-outline-secondary position-relative d-flex align-items-center justify-content-between" asp-area="" asp-page="/NuevoAlimento">
+                        <i class="fa-solid fa-circle-plus"></i>    Nuevo alimento
+                    </a>
+                }
+            }
+
+        </div>
+    </header>
 </div>
 
 <table class="table  table-hover .w-auto">
@@ -61,7 +74,11 @@
                 <td class="align-middle col-sm-1">
                     <div class="d-flex flex-column ">
                         <div><big>@alimento.PrecioStr</big></div>
-                        <div><small>Existencia: @alimento.Existencia</small></div>
+                        @if (Model.sesion.Credenciales.EsGerente)
+                        {
+                            <div><small>Existencia: @alimento.Existencia</small></div>
+
+                        }
                     </div>
                 </td>
 

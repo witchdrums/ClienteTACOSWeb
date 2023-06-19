@@ -13,10 +13,14 @@ img{
 }
 </style>
 
-<div class="d-flex flex-row">
+<header class="d-flex flex-row bg-dark rounded-top justify-content-between">
+    <div class="p-3 text-light">
         <h1>Reseñas</h1>
-</div>
+        <p>Nuestros clientes satisfechos nos avalan.</p>
+    </div>
+    
 
+</header>
 @if (!string.IsNullOrEmpty(Model.ErrorMessage))
 {
 	<div class="alert alert-danger" role="alert">

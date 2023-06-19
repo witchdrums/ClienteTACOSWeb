@@ -15,7 +15,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">T.A.C.O.S.</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -25,17 +25,17 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Menu">Menú</a>
+                            <a class="nav-link text-light" asp-area="" asp-page="/Menu">Menú</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Resena">Reseñas</a>
+                            <a class="nav-link text-light" asp-area="" asp-page="/Resena">Reseñas</a>
                         </li>
                         @{
                             string idPuesto = Context.Session.GetString("Puesto");
                             if (!String.IsNullOrWhiteSpace(idPuesto) && (Int32.Parse(idPuesto) == 1))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-page="/Staff">Staff</a>
+                                    <a class="nav-link text-light" asp-area="" asp-page="/Staff">Staff</a>
                                 </li>
                             }
                         }
@@ -45,7 +45,7 @@
                                 && (Int32.Parse(strIdPuesto) == 1 || Int32.Parse(strIdPuesto) == 2))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-page="/Pedidos">Pedidos</a>
+                                    <a class="nav-link text-light" asp-area="" asp-page="/Pedidos">Pedidos</a>
                                 </li>
                             }
                         }
@@ -62,7 +62,7 @@
                     else
                     {
                         <span class="navbar-text">
-                            <strong>Bienvenido</strong> <a class="nav-link text-dark" asp-area="" asp-page="/Perfil">@Context.Session.GetString("Nombre")</a>
+                            <strong>Bienvenido</strong> <a class="nav-link text-light" asp-area="" asp-page="/Perfil">@Context.Session.GetString("Nombre")</a>
                         </span>
                     }
                 }
@@ -77,7 +77,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="bg-dark border-top footer text-muted">
         <div class="container">
             &copy; 2023 - T.A.C.O.S. (Taco API Commercial Ordering System) - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
